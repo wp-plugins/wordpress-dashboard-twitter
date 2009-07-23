@@ -63,6 +63,16 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 This plugins is released under the GPL, you can use it free of charge on your personal or commercial blog.
 
+= Introducing a new URL shortening service - wp.gd =
+
+WordPress Dashboard Twitter comes with its own URL Shortener Service **wp.gd**! It's not public, but you can use it in WordPress Dashboard Twitter as much as you like. If - for whatever reason - you don't like wp.gd, just switch to tr.im in the options.
+
+= Acknowledgements =
+
+* Thanks to [Justin Poliey](http://justinpoliey.com/ "Justin Poliey") for a nice Twitter Class
+* Thanks to [Timothy Groves](http://www.brandspankingnew.net/ "Timothy Groves") for the the nice Mini Icons 2 series
+* Thanks to all the beta testers ;-)
+
 == Screenshots ==
 
 1. The tabbed interface
