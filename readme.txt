@@ -14,6 +14,8 @@ WordPress Dashboard Twitter is a **Dashboard Widget** that displays Twitter @rep
 
 The Dashboard widget lets you update your status, send direct messages, follow your mentions, list direct messages, sent messages and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
 
+[Introducing WordPress Dashboard Twitter](http://vimeo.com/5734274 "Introducing WordPress Dashboard Twitter") on [Vimeo](http://vimeo.com "Vimeo").
+
 **Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run.
 
 **At a glance:**
