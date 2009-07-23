@@ -19,6 +19,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 **Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run.
 
 **At a glance:**
+
 * Adds a Twitter Client to your WordPress Dashboard only
 * Display Mentions, Direct Messages, Sent messages and Favorites in a tabbed interface
 * Reply to a Twitter status or Direct Message from within the Dashboard Widget
