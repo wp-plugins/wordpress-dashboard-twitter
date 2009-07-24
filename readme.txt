@@ -34,6 +34,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 
 * English
 * German (de_DE) (Thanks to Robert Pfotenhauer ;-))
+* Italian (it_IT) (Thanks for contributing italian language goes to [Gianni Diurno](http://gidibao.net))
 
 == Frequently Asked Questions ==
 
