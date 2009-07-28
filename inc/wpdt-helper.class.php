@@ -92,7 +92,6 @@ class WPDashboardTwitter_Helper extends WPDashboardTwitter {
  	*/
 	function display_url_shortener() {
 		$shorteners = $this->dashboard_widget_options();
-		
 	}
 }
 ?>

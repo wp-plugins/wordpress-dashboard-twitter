@@ -13,26 +13,28 @@
 .wpdt-sender {
 	font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
 	font-weight: normal;
-	display: inline-block;
 	font-size: 13px;
 	line-height: 1.1;
 	padding: 0;
+	margin: 0;
 	color: #999;
+	margin-top: -0.2em;
 }
 
 .wpdt-sender a {
 }
 
 blockquote.wpdt-text {
-	margin: 5px 0 0;
+	display: inline;
+	margin: 0;
 	padding: 0;
 	line-height: 140%;
 }
 
 blockquote.wpdt-text p {
-	display: inline;
 	margin: 0;
 	padding: 0;
+	padding: 1px 0;
 }
 
 .wpdt-meta {

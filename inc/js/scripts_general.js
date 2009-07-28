@@ -77,6 +77,15 @@ var WPDashboardTwitter = {
 				jQuery('#wpdt-btn-send-status-update').text( wpdtAjaxL10n.sendDMMsg );
 			}
 		});
+		
+		jQuery('#wpdt-btn-verify-userdata').click(function() {
+			WPDashboardTwitter.verify_credentials();
+			return false;
+		});
+		
+		jQuery('#wp_dashboard_twitter .wpdt_credentials').focus(function() {
+			jQuery('#wp_dashboard_twitter .wpdt_credentials').css('background-color', '');
+		});
 	},
 	
 	tabLoader: function( index ) {
@@ -252,6 +261,23 @@ var WPDashboardTwitter = {
 		wpdt_sack.setVar( "_ajax_nonce", wpdtAjaxL10n._ajax_nonce );
 		wpdt_sack.onLoading = function() { jQuery('#wpdt-ajax-loader-update').show(); };
 		wpdt_sack.onCompletion = function(d) { jQuery('#wpdt-ajax-loader-update').hide(); };
+		wpdt_sack.onError = function() { alert('Ajax error') };
+		wpdt_sack.runAJAX();
+	},
+	
+	verify_credentials: function() {
+		var twitter_username = jQuery('#wp_dashboard_twitter #twitter_login').val();
+		var twitter_password = jQuery('#wp_dashboard_twitter #twitter_pwd').val();
+		var wpdt_sack = new sack(wpdtAjaxL10n.requestUrl);
+		wpdt_sack.execute = 1;
+		wpdt_sack.method = 'POST';
+		wpdt_sack.setVar( "action", "wpdt_verify_credentials" );
+		wpdt_sack.setVar( "username", twitter_username );
+		wpdt_sack.setVar( "password", WPDashboardTwitter_Helper.base64_encode( twitter_password ) );
+		wpdt_sack.setVar( "ajaxCall", 1 );
+		wpdt_sack.setVar( "_ajax_nonce", wpdtAjaxL10n._ajax_nonce );
+		wpdt_sack.onLoading = function() { jQuery('#wpdt-verify-userdata-ajax-loader').fadeIn(); };
+		wpdt_sack.onCompletion = function(d) { jQuery('#wpdt-verify-userdata-ajax-loader').fadeOut(); };
 		wpdt_sack.onError = function() { alert('Ajax error') };
 		wpdt_sack.runAJAX();
 	}

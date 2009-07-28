@@ -47,9 +47,9 @@ function wpdt_load_replies( $ajaxCall ) {
 		if( $options['show_avatars'] )
 			$replyoutput .= '<div class="avatar"><img src="' . urldecode( $replies->user->profile_image_url ) . '" border="0" alt="" /></div>';
 			
-		$replyoutput .= '<div class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urldecode( $replies->user->screen_name ) . '" class="url">' . wp_specialchars( $replies->user->screen_name ) . '</a></div><br />';
+		$replyoutput .= '<h4 class="wpdt-sender comment-meta">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urldecode( $replies->user->screen_name ) . '" class="url">' . wp_specialchars( $replies->user->screen_name ) . '</a></h4>';
 		$replyoutput .= '<blockquote class="wpdt-text"><p>' . $replytext . '</p></blockquote>';
-		$replyoutput .= '<p class="row-actions"><a href="' . urldecode( $replyurl ) . '" replytoname="' . $replies->user->screen_name . '" onclick="WPDashboardTwitter.reply(0, ' . $replies->id . '); return false;" class="meta-reply" title="' . __('Reply to a user', 'wp-dashboard-twitter') . '">' . __('Reply', 'wp-dashboard-twitter') . '</a> | <a href="#" onclick="WPDashboardTwitter.reply(2, ' . $replies->id . '); return false;" title="' . __('Retweet this message', 'wp-dashboard-twitter') . '">' . __('Retweet', 'wp-dashboard-twitter') . '</a></p>';
+		$replyoutput .= '<p class="row-actions"><a href="' . urldecode( $replyurl ) . '" replytoname="' . $replies->user->screen_name . '" onclick="WPDashboardTwitter.reply(0, ' . $replies->id . '); return false;" class="meta-reply" title="' . attribute_escape( __('Reply to a user', 'wp-dashboard-twitter') ) . '">' . __('Reply', 'wp-dashboard-twitter') . '</a> | <a href="#" onclick="WPDashboardTwitter.reply(2, ' . $replies->id . '); return false;" title="' . attribute_escape( __('Retweet this message', 'wp-dashboard-twitter') ) . '">' . __('Retweet', 'wp-dashboard-twitter') . '</a></p>';
 		$replyoutput .= '<div class="wpdt-meta">';
 		$replyoutput .= WPDashboardTwitter::human_diff_time_l10n( $replies->created_at );
 		if( !empty( $replies->in_reply_to_screen_name ) ) {
@@ -102,9 +102,9 @@ function wpdt_load_direct_messages( $ajaxCall ) {
 		if( $options['show_avatars'] )
 			$directoutput .= '<div class="avatar"><img src="' . urldecode( $messages->sender->profile_image_url ) . '" border="0" alt="" /></div>';
 			
-		$directoutput .= '<div class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $messages->sender_screen_name ) . '" class="url">' . wp_specialchars( $messages->sender_screen_name ) . '</a></div><br />';
-		$directoutput .= '<blockquote class="wpdt-text">' . $directtext . '</blockquote>';
-		$directoutput .= '<p class="row-actions"><a href="#" replytoname="' . $messages->sender_screen_name . '" onclick="WPDashboardTwitter.reply(1, ' . $messages->id . '); return false;" class="meta-reply" title="' . sprintf(__('Compose a new Direct Message to %s', 'wp-dashboard-twitter'), $messages->sender_screen_name) . '">' . __('Reply', 'wp-dashboard-twitter') . '</a></p>';
+		$directoutput .= '<h4 class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $messages->sender_screen_name ) . '" class="url">' . wp_specialchars( $messages->sender_screen_name ) . '</a></h4>';
+		$directoutput .= '<blockquote class="wpdt-text"><p>' . $directtext . '</p></blockquote>';
+		$directoutput .= '<p class="row-actions"><a href="#" replytoname="' . $messages->sender_screen_name . '" onclick="WPDashboardTwitter.reply(1, ' . $messages->id . '); return false;" class="meta-reply" title="' . attribute_escape( sprintf(__('Compose a new Direct Message to %s', 'wp-dashboard-twitter'), $messages->sender_screen_name) ) . '">' . __('Reply', 'wp-dashboard-twitter') . '</a></p>';
 		$directoutput .= '<div class="wpdt-meta">';
 		$directoutput .= WPDashboardTwitter::human_diff_time_l10n( $messages->created_at );
 		$directoutput .= '</div>';
@@ -155,12 +155,12 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 		if( $options['show_avatars'] )
 			$sentoutput .= '<div class="avatar"><img src="' . urldecode( $xml_usr->profile_image_url ) . '" border="0" alt="" /></div>';
 			
-		$sentoutput .= '<div class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->user->screen_name ) . '" class="url">' . wp_specialchars( $sent->user->screen_name ) . '</a> ';
+		$sentoutput .= '<h4 class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->user->screen_name ) . '" class="url">' . wp_specialchars( $sent->user->screen_name ) . '</a> ';
 		if( !empty( $sent->in_reply_to_screen_name ) )
 			$sentoutput .= __( 'to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->in_reply_to_screen_name ) . '/status/' . urlencode( $sent->in_reply_to_status_id ) . '" class="url">' . wp_specialchars( $sent->in_reply_to_screen_name ) . '</a>';
 			
-		$sentoutput .= '</div><br />';
-		$sentoutput .= '<blockquote class="wpdt-text">' . $senttext . '</blockquote><br />';
+		$sentoutput .= '</h4>';
+		$sentoutput .= '<blockquote class="wpdt-text"><p>' . $senttext . '</p></blockquote>';
 		$sentoutput .= '<div class="wpdt-meta">';
 		$sentoutput .= WPDashboardTwitter::human_diff_time_l10n( $sent->created_at );
 		$sentoutput .= '</div>';
@@ -212,8 +212,8 @@ function wpdt_load_favorites( $ajaxCall ) {
 		if( $options['show_avatars'] )
 			$favoritesoutput .= '<div class="avatar"><img src="' . urldecode( $favorite->user->profile_image_url ) . '" border="0" alt="" /></div>';
 			
-		$favoritesoutput .= '<div class="wpdt-sender">' . sprintf(__( 'By %s' ), '<a href="http://twitter.com/' . urlencode( $favorite->user->screen_name ) . '" class="url">' . wp_specialchars( $favorite->user->screen_name ) . '</a>') . '</div><br />';
-		$favoritesoutput .= '<blockquote class="wpdt-text">' . $favoritestext . '</blockquote><br />';
+		$favoritesoutput .= '<h4 class="wpdt-sender">' . sprintf(__( 'By %s' ), '<a href="http://twitter.com/' . urlencode( $favorite->user->screen_name ) . '" class="url">' . wp_specialchars( $favorite->user->screen_name ) . '</a>') . '</h4>';
+		$favoritesoutput .= '<blockquote class="wpdt-text"><p>' . $favoritestext . '</p></blockquote>';
 		$favoritesoutput .= '<div class="wpdt-meta">';
 		$favoritesoutput .= WPDashboardTwitter::human_diff_time_l10n( $favorite->created_at );
 		$favoritesoutput .= '</div>';
@@ -332,5 +332,31 @@ function wpdt_shorten_imgurl( $ajaxCall ) {
 		die( "alert('TwitPic: " . $twitpic_data->err['msg'] . "');" );
 	else
 		die( "jQuery('#wpdt-txtarea').val(jQuery('#wpdt-txtarea').val() + ' " . $twitpic_data->mediaurl . "');" );
+}
+
+
+/**
+* Validates credentials
+* 
+* SACK response function
+*
+* @since 		0.8.2
+* @param 		boolean $ajaxCall
+* @author 		info@wpdashboardtwitter.com/
+*/
+function wpdt_verify_credentials( $ajaxCall ) {
+	// security check
+	check_ajax_referer( 'wpdt_woelfi_nonce' );
+	
+	require_once( dirname(__FILE__) . '/twitter.class.php');
+	$twitter = new Twitter($_POST['username'], base64_decode($_POST['password']));
+	$verify = $twitter->verifyCredentials();
+	$xml_verify = simplexml_load_string( $verify );
+	if( $xml_verify->error ) {
+		die("jQuery('#wp_dashboard_twitter .wpdt_credentials').css('background-color', '#FFE4E4');");
+	} else {
+		die("jQuery('#wp_dashboard_twitter .wpdt_credentials').css('background-color', '#E6FFE4');");
+	}
+	$twitter->endSession('xml');
 }
 ?>
