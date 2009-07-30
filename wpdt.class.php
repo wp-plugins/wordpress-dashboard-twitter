@@ -18,7 +18,7 @@ if ( !defined( 'WP_PLUGIN_DIR' ) )
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "0.8.2");
+define("WPDT_VERSION", "0.8.3");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
@@ -34,11 +34,6 @@ define('WPDTHASPHP5', version_compare(phpversion(), '5.0.0', '>='));
  * Define the plugin path slug
  */
 define("WPDT_PLUGINPATH", "/" . plugin_basename( dirname(__FILE__) ) . "/");
-
-/**
- * Define the plugin full url
- */
-define("WPDT_PLUGINFULLURL", WP_PLUGIN_URL . WPDT_PLUGINPATH );
 
 /**
  * Define the plugin full directory
@@ -158,7 +153,10 @@ class WPDashboardTwitter {
 		if ( !function_exists("add_action") ) return;
 		$options = $this->dashboard_widget_options();
 		
+		//echo WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] );
+		
 		if( current_user_can('level_10') ) {
+			
 			add_action('wp_dashboard_setup', array (&$this, 'init_dashboard_setup'));
 			if( $pagenow == 'index.php' ) {
 				add_action('admin_print_scripts', array(&$this, 'js_admin_header') );
@@ -203,7 +201,7 @@ class WPDashboardTwitter {
 		
 		require_once( dirname(__FILE__) . '/inc/twitter.class.php');
 		$options = $this->dashboard_widget_options();
-		$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+		$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 		$usr = $twitter->showUser(array("screen_name" => $options['twitter_login']));
 		$xml_usr = simplexml_load_string( $usr );
 		$ratelimit = $twitter->rateLimitStatus(true);
@@ -212,8 +210,10 @@ class WPDashboardTwitter {
 		
 		if( !is_writable( $this->upload_url ) && $options['use_twitpic'] )
 			$errors[] = sprintf(__("The following directory needs to be writable: %s [<a href='%s'>Recheck</a>]", 'wp-dashboard-twitter'), plugin_basename( $this->upload_url ), admin_url('/'));
-		if( $options['twitter_login'] == '' || $options['twitter_pwd'] == '' )
+		if( $options['twitter_login'] == '' || WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ) == '' )
 			$errors[] = __("Please enter your Twitter username and password by clicking the widget's 'configure' link!", 'wp-dashboard-twitter');
+		if ( $options['is_pwd_encrypted'] == 0 || $options['is_pwd_encrypted'] == '' )
+			$errors[] = __("It is recommended to update the widget options for the changes to take effect!", 'wp-dashboard-twitter');
 		if( $twitter->lastStatusCode() == '400' )
 			$errors[] = __( '<strong>NOTE:</strong> The Twitter API only allows clients to make a limited number of calls in a given period. You just exceeded the rate limit.', 'wp-dashboard-twitter' );
 		
@@ -289,7 +289,7 @@ class WPDashboardTwitter {
  	* @author 		info@wpdashboardtwitter.com
  	*/
 	function dashboard_widget_options() {
-		$defaults = array( 'items' => 5, 'twitter_login' => '', 'twitter_pwd' => '', 'show_avatars' => 0, 'startup_tab' => 0, 'use_twitpic' => 1, 'url_service' => 'wpgd' );
+		$defaults = array( 'items' => 5, 'twitter_login' => '', 'twitter_pwd' => '', 'show_avatars' => 0, 'startup_tab' => 0, 'use_twitpic' => 1, 'url_service' => 'wpgd', 'is_pwd_encrypted' => 0 );
 		if ( ( !$options = get_option( 'dashboard_twitter_widget_options' ) ) || !is_array($options) )
 			$options = array();
 		return array_merge( $defaults, $options );
@@ -307,8 +307,12 @@ class WPDashboardTwitter {
 		$options = $this->dashboard_widget_options();
 		
 		if ( 'post' == strtolower($_SERVER['REQUEST_METHOD']) && isset( $_POST['widget_id'] ) && 'wp_dashboard_twitter' == $_POST['widget_id'] ) {
-			foreach ( array( 'items', 'twitter_login', 'twitter_pwd', 'show_avatars', 'startup_tab', 'use_twitpic', 'url_service' ) as $key )
-				$options[$key] = $_POST[$key];
+			foreach ( array( 'items', 'twitter_login', 'twitter_pwd', 'show_avatars', 'startup_tab', 'use_twitpic', 'url_service', 'is_pwd_encrypted' ) as $key ) {
+				if( $key == 'twitter_pwd' )
+					$options[$key] = WPDashboardTwitter_Helper::encrypt( $_POST[$key] );
+				else
+					$options[$key] = $_POST[$key];
+			}
 				
 			update_option( 'dashboard_twitter_widget_options', $options );
 		}
@@ -319,7 +323,7 @@ class WPDashboardTwitter {
 		</p>
 		<p>
 			<label for="twitter_pwd"><?php _e('Twitter Password', 'wp-dashboard-twitter' ); ?></label>
-			<input id="twitter_pwd" class="widefat wpdt_credentials" type="password" value="<?php echo $options['twitter_pwd']; ?>" name="twitter_pwd" />
+			<input id="twitter_pwd" class="widefat wpdt_credentials" type="password" value="<?php echo WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ); ?>" name="twitter_pwd" />
 		</p>
 		<p class="textright">
 			<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" id="wpdt-verify-userdata-ajax-loader" style="display:none;" /> <a class="button" href="#" id="wpdt-btn-verify-userdata"><?php _e('Verify Credentials', 'wp-dashboard-twitter' ); ?></a>
@@ -355,6 +359,9 @@ class WPDashboardTwitter {
 		<p>
 			<input id="use_twitpic" name="use_twitpic" type="checkbox" value="1"<?php if( 1 == $options['use_twitpic'] ) echo ' checked="checked"'; ?> />
 			<label for="use_twitpic"><?php _e('Use Twitpic to share photos on Twitter?', 'wp-dashboard-twitter' ); ?></label>
+		</p>
+		<p>
+			<input id="is_pwd_encrypted" name="is_pwd_encrypted" type="hidden" value="1" />
 		</p>
 		<?php
 	}

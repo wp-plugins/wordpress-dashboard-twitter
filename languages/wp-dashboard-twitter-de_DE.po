@@ -51,44 +51,44 @@ msgstr "an"
 msgid "No favorites!"
 msgstr "Keine Favoriten!"
 
-#: wpdt.class.php:193
+#: wpdt.class.php:188
 #@ wp-dashboard-twitter
 msgid "WordPress Dashboard Twitter"
 msgstr "WordPress Dashboard Twitter"
 
-#: wpdt.class.php:223
+#: wpdt.class.php:214
 #@ wp-dashboard-twitter
 msgid "Please enter your Twitter username and password by clicking the widget's 'configure' link!"
 msgstr "Klicke auf den Konfigurieren-Link im Widgetheader und gib deinen Twitter-Benutzernamen und das dazugeh&ouml;rige Passwort ein!"
 
-#: wpdt.class.php:237
-#: wpdt.class.php:345
+#: wpdt.class.php:230
+#: wpdt.class.php:342
 #@ wp-dashboard-twitter
 msgid "Mentions"
 msgstr "Antworten"
 
-#: wpdt.class.php:238
-#: wpdt.class.php:346
+#: wpdt.class.php:231
+#: wpdt.class.php:343
 #@ wp-dashboard-twitter
 msgid "Direct"
 msgstr "Nachrichten"
 
-#: wpdt.class.php:239
-#: wpdt.class.php:347
+#: wpdt.class.php:232
+#: wpdt.class.php:344
 #@ wp-dashboard-twitter
 msgid "Sent"
 msgstr "Gesendet"
 
-#: wpdt.class.php:240
-#: wpdt.class.php:348
+#: wpdt.class.php:233
+#: wpdt.class.php:345
 #@ wp-dashboard-twitter
 msgid "Favorites"
 msgstr "Favoriten"
 
+#: wpdt.class.php:239
 #: wpdt.class.php:246
 #: wpdt.class.php:253
 #: wpdt.class.php:260
-#: wpdt.class.php:267
 #@ wp-dashboard-twitter
 msgid "Reload"
 msgstr "Neu laden"
@@ -99,22 +99,22 @@ msgstr "Neu laden"
 msgid "%s ago"
 msgstr "vor %s"
 
-#: wpdt.class.php:324
+#: wpdt.class.php:321
 #@ wp-dashboard-twitter
 msgid "Twitter Username"
 msgstr "Twitter-Benutzername"
 
-#: wpdt.class.php:328
+#: wpdt.class.php:325
 #@ wp-dashboard-twitter
 msgid "Twitter Password"
 msgstr "Twitter-Passwort"
 
-#: wpdt.class.php:335
+#: wpdt.class.php:332
 #@ wp-dashboard-twitter
 msgid "How many items?"
 msgstr "Wie viele Nachrichten sollen angezeigt werden?"
 
-#: wpdt.class.php:360
+#: wpdt.class.php:357
 #@ wp-dashboard-twitter
 msgid "Show Avatars?"
 msgstr "Avatare anzeigen?"
@@ -134,7 +134,7 @@ msgstr "WordPress Dashboard Twitter ben&ouml;tigt mindestens PHP 5!"
 msgid "No mentions!"
 msgstr "Keine Erw&auml;hnungen!"
 
-#: wpdt.class.php:225
+#: wpdt.class.php:218
 #@ wp-dashboard-twitter
 msgid "<strong>NOTE:</strong> The Twitter API only allows clients to make a limited number of calls in a given period. You just exceeded the rate limit."
 msgstr "<strong>HINWEIS:</strong> Die Twitter API erlaubt nur eine begrenzte Anzahl an Zugriffen pro Stunde. Du hast das Limit bereits &uuml;berschritten."
@@ -145,7 +145,7 @@ msgstr "<strong>HINWEIS:</strong> Die Twitter API erlaubt nur eine begrenzte Anz
 msgid "Reply"
 msgstr "Antworten"
 
-#: wpdt.class.php:343
+#: wpdt.class.php:340
 #@ wp-dashboard-twitter
 msgid "Tab to open by default"
 msgstr "Beim Start folgendes Tab &ouml;ffnen"
@@ -162,21 +162,21 @@ msgstr "Hallo %s"
 msgid "You have %d followers"
 msgstr "Du hast %d Verfolger"
 
+#: wpdt.class.php:239
 #: wpdt.class.php:246
 #: wpdt.class.php:253
 #: wpdt.class.php:260
-#: wpdt.class.php:267
 #@ wp-dashboard-twitter
 msgid "Update Status"
 msgstr "Status aktualisieren"
 
-#: wpdt.class.php:282
+#: wpdt.class.php:275
 #: wpdt.class.php:464
 #@ wp-dashboard-twitter
 msgid "Send Update"
 msgstr "Update senden"
 
-#: wpdt.class.php:282
+#: wpdt.class.php:275
 msgid "Cancel"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "By %s"
 msgstr ""
 
-#: wpdt.class.php:273
+#: wpdt.class.php:266
 #@ wp-dashboard-twitter
 msgid "Shorten URL"
 msgstr "URL k&uuml;rzen"
@@ -211,12 +211,12 @@ msgstr "Einem Benutzer antworten"
 msgid "Compose a new Direct Message to %s"
 msgstr "Schreibe %s eine Privatnachricht"
 
-#: wpdt.class.php:275
+#: wpdt.class.php:268
 #@ wp-dashboard-twitter
 msgid "Upload &amp; Shorten Image"
 msgstr "Bild hochladen &amp; Kurz-URL erstellen"
 
-#: wpdt.class.php:364
+#: wpdt.class.php:361
 #@ wp-dashboard-twitter
 msgid "Use Twitpic to share photos on Twitter?"
 msgstr "Twitpic nutzen, um deine Fotos bei Twitter anzuzeigen?"
@@ -236,10 +236,10 @@ msgstr "Ungültige Dateiendung"
 msgid "Sending..."
 msgstr "Sende..."
 
+#: wpdt.class.php:239
 #: wpdt.class.php:246
 #: wpdt.class.php:253
 #: wpdt.class.php:260
-#: wpdt.class.php:267
 #, php-format
 #@ wp-dashboard-twitter
 msgid "Remaining API for account %s: %d/%d"
@@ -255,30 +255,35 @@ msgstr "Retweete diese Nachricht"
 msgid "Retweet"
 msgstr "Retweet"
 
-#: wpdt.class.php:219
+#: wpdt.class.php:212
 #, php-format
 #@ wp-dashboard-twitter
 msgid "The following directory needs to be writable: %s [<a href='%s'>Recheck</a>]"
 msgstr "Folgender Ordner muss beschreibbar sein: %s [<a href='%s'>Nochmal pr&uuml;fen</a>]"
 
-#: wpdt.class.php:352
+#: wpdt.class.php:349
 #@ wp-dashboard-twitter
 msgid "URL Shortener"
 msgstr "Kurz-URL-Anbieter"
 
-#: wpdt.class.php:354
+#: wpdt.class.php:351
 #@ wp-dashboard-twitter
 msgid "wp.gd"
 msgstr "wp.gd"
 
-#: wpdt.class.php:355
+#: wpdt.class.php:352
 #@ wp-dashboard-twitter
 msgid "tr.im"
 msgstr "tr.im"
 
-#: wpdt.class.php:332
+#: wpdt.class.php:329
 #: wpdt.class.php:466
 #@ wp-dashboard-twitter
 msgid "Verify Credentials"
 msgstr "Zugangsdaten &uuml;berpr&uuml;fen"
+
+#: wpdt.class.php:216
+#@ wp-dashboard-twitter
+msgid "It is recommended to update the widget options for the changes to take effect!"
+msgstr "Es wird empfohlen, die Widget-Optionen neu zu speichern, damit alle &Auml;nderungen wirksam werden!"
 

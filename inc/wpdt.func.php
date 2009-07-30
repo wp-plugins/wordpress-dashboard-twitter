@@ -21,7 +21,7 @@ function wpdt_load_replies( $ajaxCall ) {
 	
 	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 	$replies_xml = $twitter->getMentions(array("count" => $options['items']));
 	$xml_replies = simplexml_load_string( $replies_xml );
 	
@@ -83,7 +83,7 @@ function wpdt_load_direct_messages( $ajaxCall ) {
 	
 	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 	$direct_xml = $twitter->getMessages(array("count" => $options['items']));
 	$xml_direct = simplexml_load_string( $direct_xml );
 	
@@ -134,7 +134,7 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 	
 	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 	$sent_xml = $twitter->getUserTimeline(array("count" => $options['items']));
 	$usr = $twitter->showUser(array("screen_name" => $options['twitter_login']));
 	$xml_usr = simplexml_load_string( $usr );
@@ -157,7 +157,7 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 			
 		$sentoutput .= '<h4 class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->user->screen_name ) . '" class="url">' . wp_specialchars( $sent->user->screen_name ) . '</a> ';
 		if( !empty( $sent->in_reply_to_screen_name ) )
-			$sentoutput .= __( 'to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->in_reply_to_screen_name ) . '/status/' . urlencode( $sent->in_reply_to_status_id ) . '" class="url">' . wp_specialchars( $sent->in_reply_to_screen_name ) . '</a>';
+			$sentoutput .= __( 'to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->in_reply_to_screen_name ) . '" class="url">' . wp_specialchars( $sent->in_reply_to_screen_name ) . '</a>';
 			
 		$sentoutput .= '</h4>';
 		$sentoutput .= '<blockquote class="wpdt-text"><p>' . $senttext . '</p></blockquote>';
@@ -190,7 +190,7 @@ function wpdt_load_favorites( $ajaxCall ) {
 	
 	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 	$favorites_xml = $twitter->getFavorites(array("count" => $options['items']), "xml");
 	$xml_favorites = simplexml_load_string( $favorites_xml );
 	
@@ -247,7 +247,7 @@ function wpdt_send_update( $ajaxCall ) {
 	
 	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], $options['twitter_pwd']);
+	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
 	$twitter->application_source = 'wpdashboardtwitter';
 	$twitter->updateStatus( stripslashes($_POST['status_text']), $in_reply_to );
 }
@@ -311,7 +311,7 @@ function wpdt_shorten_imgurl( $ajaxCall ) {
 	$params = array(
 		"media" => "@$img",
 		"username" => $options['twitter_login'],
-		"password" => $options['twitter_pwd'],
+		"password" => WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ),
 		"source" => "wordpressdashboardtwitter"
 	);
 	

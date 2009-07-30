@@ -93,5 +93,40 @@ class WPDashboardTwitter_Helper extends WPDashboardTwitter {
 	function display_url_shortener() {
 		$shorteners = $this->dashboard_widget_options();
 	}
+	
+	
+	/**
+ 	* Encrypts a string for storing in the db
+ 	*
+ 	* @since 		0.8.3
+ 	* @param 		string	$str
+ 	* @return 		string	$str
+ 	* @author 		info@wpdashboardtwitter.com
+ 	*/
+	function encrypt( $str ) {
+		global $wp_default_secret_key;
+		$str = base64_encode( $str . 'wpdtwoelfi' ); // The evil w-word again. :-(
+		return $str;
+	}
+	
+	
+	/**
+ 	* Decrypts a string
+ 	*
+ 	* @since 		0.8.3
+ 	* @param 		string	$str
+ 	* @return 		string	$str
+ 	* @author 		info@wpdashboardtwitter.com
+ 	*/
+	function decrypt( $str ) {
+		$options = parent::dashboard_widget_options();
+		
+		if ( $options['is_pwd_encrypted'] == 0 || $options['is_pwd_encrypted'] == '' )
+			$str = $str;
+		else
+			$str = substr( base64_decode( $str ), 0, -10 );
+			
+		return $str;
+	}
 }
 ?>

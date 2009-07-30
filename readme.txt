@@ -56,6 +56,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 0.8.3 =
+* FIXED: passwords are now stored encrypted
+* FIXED: incorrect link in the sent panel
+
 = 0.8.2 =
 * NEW: Verifying credentials on options panel
 * FIXED: issue with localization on AJAX loading (thanks for testing, [Gianni Diurno](http://gidibao.net)!)
