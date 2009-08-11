@@ -18,7 +18,7 @@ if ( !defined( 'WP_PLUGIN_DIR' ) )
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "0.8.3");
+define("WPDT_VERSION", "0.8.4");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
@@ -290,8 +290,10 @@ class WPDashboardTwitter {
  	*/
 	function dashboard_widget_options() {
 		$defaults = array( 'items' => 5, 'twitter_login' => '', 'twitter_pwd' => '', 'show_avatars' => 0, 'startup_tab' => 0, 'use_twitpic' => 1, 'url_service' => 'wpgd', 'is_pwd_encrypted' => 0 );
-		if ( ( !$options = get_option( 'dashboard_twitter_widget_options' ) ) || !is_array($options) )
+		if( ( !$options = get_option( 'dashboard_twitter_widget_options' ) ) || !is_array($options) )
 			$options = array();
+			
+		if( $options['url_service'] == 'trim' ) $options['url_service'] = 'bitly';
 		return array_merge( $defaults, $options );
 	}
 	
@@ -349,7 +351,8 @@ class WPDashboardTwitter {
 			<label for="url_service"><?php _e('URL Shortener', 'wp-dashboard-twitter' ); ?></label>
 			<select id="url_service" name="url_service">
 				<option value="wpgd"<?php echo ( $options['url_service'] == 'wpgd' ? " selected='selected'" : '' ) ?>><?php _e('wp.gd', 'wp-dashboard-twitter'); ?></option>
-				<option value="trim"<?php echo ( $options['url_service'] == 'trim' ? " selected='selected'" : '' ) ?>><?php _e('tr.im', 'wp-dashboard-twitter'); ?></option>
+				<!--<option value="trim"<?php echo ( $options['url_service'] == 'trim' ? " selected='selected'" : '' ) ?>><?php _e('tr.im', 'wp-dashboard-twitter'); ?></option>-->
+				<option value="bitly"<?php echo ( $options['url_service'] == 'bitly' ? " selected='selected'" : '' ) ?>><?php _e('bit.ly', 'wp-dashboard-twitter'); ?></option>
 			</select>
 		</p>
 		<p>

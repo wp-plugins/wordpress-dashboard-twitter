@@ -284,9 +284,13 @@ function wpdt_shorten_url( $ajaxCall ) {
 		case 'wpgd':
 			$url = $url_data;
 			break;
-		case 'trim':
+		//case 'trim':
+		//	$url_data = simplexml_load_string( $url_data );
+		//	$url = $url_data->url;
+		//	break;
+		case 'bitly':
 			$url_data = simplexml_load_string( $url_data );
-			$url = $url_data->url;
+			$url = $url_data->results->nodeKeyVal->shortUrl;
 			break;
 	}
 	curl_close($ch);
