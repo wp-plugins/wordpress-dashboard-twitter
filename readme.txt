@@ -1,7 +1,7 @@
 === WordPress Dashboard Twitter ===
 Contributors: Alphawolf, ratterobert
-Donate link: 
-Tags: twitter, tweet, wordpress, dashboard, widget
+Donate link:
+Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd
 Requires at least: 2.7
 Tested up to: 2.9-rare
 Stable tag: trunk
@@ -26,7 +26,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * No dedicated page in your WordPress admin panel
 * All customization can be done through the Widget’s Configuration
 * No impact on your blog’s frontend or other backend pages
-* Shortening URLs with **wp.gd (new!)** or tr.im
+* Shortening URLs with **wp.gd (new!)** or bit.ly
 * One-Click-Image-Upload for TwitPic
 * Whenever you check your incoming links or WordPress News in the Dashboard, you can check your Twitter Status as well
 
