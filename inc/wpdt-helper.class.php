@@ -77,7 +77,7 @@ class WPDashboardTwitter_Helper extends WPDashboardTwitter {
 	function get_url_shorteners() {
 		$services = array(
 			'wpgd' => array( 'name' => 'wp.gd', 'apiurl' => 'http://wp.gd/xxx/api.php?longurl=' ),
-			//'trim' => array( 'name' => 'tr.im', 'apiurl' => 'http://api.tr.im/api/trim_url.xml?url=' ), // Discontinued service in 2009
+			'trim' => array( 'name' => 'tr.im', 'apiurl' => 'http://api.tr.im/api/trim_url.xml?url=' ),
 			'bitly' => array( 'name' => 'bit.ly', 'apiurl' => 'http://api.bit.ly/shorten?version=2.0.1&format=xml&login=wpdashboardtwitter&apiKey=R_1170b54df8fff071764dad0188ed02da&longUrl=' )
 		);
 		return $services;

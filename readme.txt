@@ -56,6 +56,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 0.8.5 =
+* FIXED: Damn you guys at tr.im! - re-integrated tr.im URL shortener
+
 = 0.8.4 =
 * FIXED: tr.im discontinued service thus it has been removed
 * NEW: Added bit.ly URL shortener
