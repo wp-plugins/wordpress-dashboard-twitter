@@ -18,7 +18,7 @@ if ( !defined( 'WP_PLUGIN_DIR' ) )
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "0.8.5");
+define("WPDT_VERSION", "0.8.6");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
@@ -158,7 +158,7 @@ class WPDashboardTwitter {
 		if( current_user_can('level_10') ) {
 			
 			add_action('wp_dashboard_setup', array (&$this, 'init_dashboard_setup'));
-			if( $pagenow == 'index.php' ) {
+			if( $pagenow == 'index.php' && !isset($_GET['page']) ) {
 				add_action('admin_print_scripts', array(&$this, 'js_admin_header') );
 				// will be loaded at runtime
 				//wp_enqueue_script('wpdt-charcounter-js', WPDashboardTwitter_Helper::plugins_url('inc/js/charcounter.js', __FILE__), array(), WPDT_VERSION);
@@ -198,85 +198,96 @@ class WPDashboardTwitter {
  	*/
 	function init_dashboard_widget() {
 		$errors = array();
+		$twterror = false;
 		
 		require_once( dirname(__FILE__) . '/inc/twitter.class.php');
 		$options = $this->dashboard_widget_options();
 		$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-		$usr = $twitter->showUser(array("screen_name" => $options['twitter_login']));
-		$xml_usr = simplexml_load_string( $usr );
-		$ratelimit = $twitter->rateLimitStatus(true);
-		$xml_ratelimit = simplexml_load_string( $ratelimit );
-		$shorteners = WPDashboardTwitter_Helper::get_url_shorteners();
 		
-		if( !is_writable( $this->upload_url ) && $options['use_twitpic'] )
-			$errors[] = sprintf(__("The following directory needs to be writable: %s [<a href='%s'>Recheck</a>]", 'wp-dashboard-twitter'), plugin_basename( $this->upload_url ), admin_url('/'));
-		if( $options['twitter_login'] == '' || WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ) == '' )
-			$errors[] = __("Please enter your Twitter username and password by clicking the widget's 'configure' link!", 'wp-dashboard-twitter');
-		if ( $options['is_pwd_encrypted'] == 0 || $options['is_pwd_encrypted'] == '' )
-			$errors[] = __("It is recommended to update the widget options for the changes to take effect!", 'wp-dashboard-twitter');
-		if( $twitter->lastStatusCode() == '400' )
-			$errors[] = __( '<strong>NOTE:</strong> The Twitter API only allows clients to make a limited number of calls in a given period. You just exceeded the rate limit.', 'wp-dashboard-twitter' );
-		
-		if( count($errors) == 0 )
-			echo '<p class="account-info">' . $this->get_account_info( $usr ) . '</p>';
-			
-		foreach( $errors as $error ) {
-			echo '<span class="error fade">' . $error . '</span>';
+		$twitterstatus = $twitter->test(); $xml_twitterstatus = simplexml_load_string( $twitterstatus );
+		if( (string)$xml_twitterstatus != 'true' ) {
+			$twterror = true;
 		}
-		?>
-		<img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/twitter.gif', __FILE__); ?>" border="0" alt="" id="twitterbird" />
-		<div id="wpdt-tabs" class="ui-tabs">
-			<ul>
-				<li><a href="#wpdt-replies"><?php _e('Mentions', 'wp-dashboard-twitter'); ?></a></li>
-				<li><a href="#wpdt-dm"><?php _e('Direct', 'wp-dashboard-twitter'); ?></a></li>
-				<li><a href="#wpdt-sent"><?php _e('Sent', 'wp-dashboard-twitter'); ?></a></li>
-				<li><a href="#wpdt-favorites"><?php _e('Favorites', 'wp-dashboard-twitter'); ?></a></li>
-			</ul>
-			<div id="wpdt-replies" class="wpdt-container">
-				<ul id="wpdt-replies-wrapper">
-				</ul>
-				<p class="textright wpdt-loader">
-					<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status" href="#"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-replies" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
-				</p>
-			</div>
-			<div id="wpdt-dm" class="ui-tabs-hide wpdt-container">
-				<ul id="wpdt-direct-wrapper">
-				</ul>
-				<p class="textright wpdt-loader">
-					<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-direct-messages" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
-				</p>
-			</div>
-			<div id="wpdt-sent" class="ui-tabs-hide wpdt-container">
-				<ul id="wpdt-sent-wrapper">
-				</ul>
-				<p class="textright wpdt-loader">
-					<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-sent-messages" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
-				</p>
-			</div>
-			<div id="wpdt-favorites" class="ui-tabs-hide wpdt-container">
-				<ul id="wpdt-fav-wrapper">
-				</ul>
-				<p class="textright wpdt-loader">
-					<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-favorites" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
-				</p>
-			</div>
+		
+		if( $twterror != false ) :
+			echo '<p class="account-info">' . __("Twitter is unavailable at the moment. Please try again later!", 'wp-dashboard-twitter') . '</p>';
+		else:
+			$usr = $twitter->showUser(array("screen_name" => $options['twitter_login']));
+			$xml_usr = simplexml_load_string( $usr );
+			$ratelimit = $twitter->rateLimitStatus(true);
+			$xml_ratelimit = simplexml_load_string( $ratelimit );
+			$shorteners = WPDashboardTwitter_Helper::get_url_shorteners();
 			
-			<div id="wpdt-update-wrapper" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display:none;">
-				<p class="account-info wpdt-toolbar">
-					<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?> (<?php echo $shorteners[$options['url_service']]['name']; ?>): <input id="wpdt-long-url" size="25" type="text" value="" name="wpdt-long-url" /> <a href="#" id="wpdt-btn-shorten-url"><img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/shorten-url.gif', __FILE__); ?>" border="0" width="10" height="10" alt="<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?>" title="<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?>" /></a> 
-					<?php if( $options['use_twitpic'] ) { ?>
-					| <a href="#" id="wpdt-imgupload_button"><img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/image.gif', __FILE__); ?>" border="0" width="10" height="10" alt="<?php _e('Upload &amp; Shorten Image', 'wp-dashboard-twitter'); ?>" title="<?php _e('Upload &amp; Shorten Image', 'wp-dashboard-twitter'); ?>" /></a>
-					<?php } ?>
-					<span id="wpdt-charcount">140</span>
-				</p>
-				<textarea id="wpdt-txtarea" class="widefat mceEditor" cols="15" rows="2" name="wpdt-txtarea"></textarea>
-				<input type="hidden" name="wpdt_in_reply_to_statusid" id="wpdt_in_reply_to_statusid" value="" />
-				<p class="textright">
-					<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" id="wpdt-ajax-loader-update" style="display:none;" /> <a class="button-primary" id="wpdt-btn-send-status-update"><?php _e('Send Update', 'wp-dashboard-twitter'); ?></a> <a class="button" href="#" id="wpdt-btn-cancel-status-update"><?php _e('Cancel'); ?></a>
-				</p>
+			if( !is_writable( $this->upload_url ) && $options['use_twitpic'] )
+				$errors[] = sprintf(__("The following directory needs to be writable: %s [<a href='%s'>Recheck</a>]", 'wp-dashboard-twitter'), plugin_basename( $this->upload_url ), admin_url('/'));
+			if( $options['twitter_login'] == '' || WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ) == '' )
+				$errors[] = __("Please enter your Twitter username and password by clicking the widget's 'configure' link!", 'wp-dashboard-twitter');
+			if( $options['is_pwd_encrypted'] == 0 || $options['is_pwd_encrypted'] == '' )
+				$errors[] = __("It is recommended to update the widget options for the changes to take effect!", 'wp-dashboard-twitter');
+			if( $twitter->lastStatusCode() == '400' )
+				$errors[] = __( '<strong>NOTE:</strong> The Twitter API only allows clients to make a limited number of calls in a given period. You just exceeded the rate limit.', 'wp-dashboard-twitter' );
+			
+			if( count($errors) == 0 )
+				echo '<p class="account-info">' . $this->get_account_info( $usr ) . '</p>';
+				
+			foreach( $errors as $error ) {
+				echo '<span class="error fade">' . $error . '</span>';
+			}
+			?>
+			<img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/twitter.gif', __FILE__); ?>" border="0" alt="" id="twitterbird" />
+			<div id="wpdt-tabs" class="ui-tabs">
+				<ul>
+					<li><a href="#wpdt-replies"><?php _e('Mentions', 'wp-dashboard-twitter'); ?></a></li>
+					<li><a href="#wpdt-dm"><?php _e('Direct', 'wp-dashboard-twitter'); ?></a></li>
+					<li><a href="#wpdt-sent"><?php _e('Sent', 'wp-dashboard-twitter'); ?></a></li>
+					<li><a href="#wpdt-favorites"><?php _e('Favorites', 'wp-dashboard-twitter'); ?></a></li>
+				</ul>
+				<div id="wpdt-replies" class="wpdt-container">
+					<ul id="wpdt-replies-wrapper">
+					</ul>
+					<p class="textright wpdt-loader">
+						<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status" href="#"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-replies" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
+					</p>
+				</div>
+				<div id="wpdt-dm" class="ui-tabs-hide wpdt-container">
+					<ul id="wpdt-direct-wrapper">
+					</ul>
+					<p class="textright wpdt-loader">
+						<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-direct-messages" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
+					</p>
+				</div>
+				<div id="wpdt-sent" class="ui-tabs-hide wpdt-container">
+					<ul id="wpdt-sent-wrapper">
+					</ul>
+					<p class="textright wpdt-loader">
+						<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-sent-messages" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
+					</p>
+				</div>
+				<div id="wpdt-favorites" class="ui-tabs-hide wpdt-container">
+					<ul id="wpdt-fav-wrapper">
+					</ul>
+					<p class="textright wpdt-loader">
+						<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" class="wpdt-ajax-loader" style="display:none;" /> <?php if( count($errors) == 0 ) { ?><a class="button-primary wpdt-btn-update-status"><?php _e('Update Status', 'wp-dashboard-twitter'); ?></a><?php } ?> <a class="button" href="#" id="wpdt-btn-load-favorites" title="<?php printf(__('Remaining API for account %s: %d/%d', 'wp-dashboard-twitter'), $xml_usr->screen_name, $xml_ratelimit->{'remaining-hits'}, $xml_ratelimit->{'hourly-limit'}); ?>"><?php _e('Reload', 'wp-dashboard-twitter'); ?></a>
+					</p>
+				</div>
+				
+				<div id="wpdt-update-wrapper" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display:none;">
+					<p class="account-info wpdt-toolbar">
+						<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?> (<?php echo $shorteners[$options['url_service']]['name']; ?>): <input id="wpdt-long-url" size="25" type="text" value="" name="wpdt-long-url" /> <a href="#" id="wpdt-btn-shorten-url"><img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/shorten-url.gif', __FILE__); ?>" border="0" width="10" height="10" alt="<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?>" title="<?php _e('Shorten URL', 'wp-dashboard-twitter'); ?>" /></a> 
+						<?php if( $options['use_twitpic'] ) { ?>
+						| <a href="#" id="wpdt-imgupload_button"><img src="<?php echo WPDashboardTwitter_Helper::plugins_url('inc/img/image.gif', __FILE__); ?>" border="0" width="10" height="10" alt="<?php _e('Upload &amp; Shorten Image', 'wp-dashboard-twitter'); ?>" title="<?php _e('Upload &amp; Shorten Image', 'wp-dashboard-twitter'); ?>" /></a>
+						<?php } ?>
+						<span id="wpdt-charcount">140</span>
+					</p>
+					<textarea id="wpdt-txtarea" class="widefat mceEditor" cols="15" rows="2" name="wpdt-txtarea"></textarea>
+					<input type="hidden" name="wpdt_in_reply_to_statusid" id="wpdt_in_reply_to_statusid" value="" />
+					<p class="textright">
+						<img src="<?php echo WPDT_LOADINGIMG; ?>" border="0" alt="" align="left" id="wpdt-ajax-loader-update" style="display:none;" /> <a class="button-primary" id="wpdt-btn-send-status-update"><?php _e('Send Update', 'wp-dashboard-twitter'); ?></a> <a class="button" href="#" id="wpdt-btn-cancel-status-update"><?php _e('Cancel'); ?></a>
+					</p>
+				</div>
 			</div>
-		</div>
 		<?php
+		endif;
 	}
 	
 	

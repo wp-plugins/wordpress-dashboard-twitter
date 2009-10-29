@@ -541,6 +541,8 @@ class Twitter extends TwitterBase {
 		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, TRUE);
 		@curl_setopt($curl_handle, CURLOPT_FOLLOWLOCATION, 1);
 		curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($curl_handle, CURLOPT_TIMEOUT, 10);
 		$twitter_data = curl_exec($curl_handle);
 		$this->http_status = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
 		$this->last_api_call = $api_url;

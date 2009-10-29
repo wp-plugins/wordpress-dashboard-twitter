@@ -8,7 +8,7 @@
 
 /*
 Plugin Name: WordPress Dashboard Twitter
-Version: 0.8.5
+Version: 0.8.6
 Plugin URI: http://wpdashboardtwitter.com/
 Description: <strong>WordPress 2.7+ only.</strong> Display Twitter @replies, direct messages, sent messages, favorites and send tweets and direct messages the convenient way within your WordPress Dashboard.
 Author: Oliver Schl&ouml;be &amp; Robert Pfotenhauer

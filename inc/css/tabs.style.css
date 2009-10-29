@@ -33,17 +33,17 @@ div#wp_dashboard_twitter .ui-tabs-nav li a {
 	text-decoration: none;
 	padding: .5em;
 	color: #555555;
-	background: #e6e6e6 url(images/e6e6e6_40x100_textures_02_glass_75.png) 0 50% repeat-x;
+	background: #e6e6e6;
 }
 div#wp_dashboard_twitter .ui-tabs-nav li a:hover {
-	background: #dadada url(images/dadada_40x100_textures_02_glass_75.png) 0 50% repeat-x;
+	background: #dadada;
 	color: #212121;
 }
 div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected {
 	border-bottom-color: #ffffff;
 }
 div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a:hover {
-	background: #ffffff url(images/ffffff_40x100_textures_02_glass_65.png) 0 50% repeat-x;
+	background: #ffffff;
 	color: #212121;
 }
 div#wp_dashboard_twitter .ui-tabs-panel {
@@ -51,7 +51,7 @@ div#wp_dashboard_twitter .ui-tabs-panel {
 	font-family: Verdana,Arial,sans-serif;
 	clear:left;
 	border: 1px solid #d3d3d3 !important; 
-	background: #ffffff url(images/ffffff_40x100_textures_01_flat_75.png) 0 0 repeat-x;
+	background: #ffffff;
 	color: #222222;
 	padding: 0.8em 1.0em;	
 	font-size: 1.1em;
@@ -75,7 +75,7 @@ div#wp_dashboard_twitter .ui-component {
 /*component content styles*/
 div#wp_dashboard_twitter .ui-component-content {
 	border: 1px solid #aaaaaa;
-	background: #ffffff url(images/ffffff_40x100_textures_01_flat_75.png) 0 0 repeat-x;
+	background: #ffffff;
 	color: #222222;
 }
 div#wp_dashboard_twitter .ui-component-content a {
@@ -85,7 +85,7 @@ div#wp_dashboard_twitter .ui-component-content a {
 /*component states*/
 div#wp_dashboard_twitter .ui-default-state {
 	border: 1px solid #d3d3d3;
-	background: #e6e6e6 url(images/e6e6e6_40x100_textures_02_glass_75.png) 0 50% repeat-x;
+	background: #e6e6e6;
 	font-weight: normal;
 	color: #555555 !important;
 }
@@ -94,7 +94,7 @@ div#wp_dashboard_twitter .ui-default-state a {
 }
 div#wp_dashboard_twitter .ui-default-state:hover, div#wp_dashboard_twitter .ui-hover-state {
 	border: 1px solid #999999;
-	background: #dadada url(images/dadada_40x100_textures_02_glass_75.png) 0 50% repeat-x;
+	background: #dadada;
 	font-weight: normal;
 	color: #212121 !important;
 }
@@ -103,7 +103,7 @@ div#wp_dashboard_twitter .ui-hover-state a {
 }
 div#wp_dashboard_twitter .ui-default-state:active, div#wp_dashboard_twitter .ui-active-state {
 	border: 1px solid #aaaaaa;
-	background: #ffffff url(images/ffffff_40x100_textures_02_glass_65.png) 0 50% repeat-x;
+	background: #ffffff;
 	font-weight: normal;
 	color: #212121 !important;
 	outline: none;

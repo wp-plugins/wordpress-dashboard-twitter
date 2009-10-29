@@ -56,6 +56,12 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 0.8.6 =
+* FIXED: JS and CSS files won't be included in index.php pages other than dashboard only anymore
+* FIXED: Removed references to images that don't exist (anymore) in tabs.style.css
+* FIXED: Added a check if Twitter is available
+* FIXED: Added request and response timeouts to all CURL operations
+
 = 0.8.5 =
 * FIXED: Damn you guys at tr.im! - re-integrated tr.im URL shortener
 
