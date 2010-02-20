@@ -1,9 +1,9 @@
 === WordPress Dashboard Twitter ===
 Contributors: Alphawolf, ratterobert
-Donate link: 
-Tags: twitter, tweet, wordpress, dashboard, widget
+Donate link:
+Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd
 Requires at least: 2.7
-Tested up to: 2.9-rare
+Tested up to: 2.9.2
 Stable tag: trunk
 
 The most creative name **WordPress Dashboard Twitter** in fact represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
@@ -14,7 +14,7 @@ Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboa
 
 The Dashboard widget lets you update your status, send direct messages, follow your mentions, list direct messages, sent messages and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
 
-[Introducing WordPress Dashboard Twitter](http://vimeo.com/5734274 "Introducing WordPress Dashboard Twitter") on [Vimeo](http://vimeo.com "Vimeo").
+[vimeo http://vimeo.com/5734274]
 
 **Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run.
 
@@ -26,7 +26,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * No dedicated page in your WordPress admin panel
 * All customization can be done through the Widget’s Configuration
 * No impact on your blog’s frontend or other backend pages
-* Shortening URLs with **wp.gd (new!)** or tr.im
+* Shortening URLs with **wp.gd (new!)** or bit.ly
 * One-Click-Image-Upload for TwitPic
 * Whenever you check your incoming links or WordPress News in the Dashboard, you can check your Twitter Status as well
 
@@ -56,6 +56,19 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 0.8.6 =
+* FIXED: JS and CSS files won't be included in index.php pages other than dashboard only anymore
+* FIXED: Removed references to images that don't exist (anymore) in tabs.style.css
+* FIXED: Added a check if Twitter is available
+* FIXED: Added request and response timeouts to all CURL operations
+
+= 0.8.5 =
+* FIXED: Damn you guys at tr.im! - re-integrated tr.im URL shortener
+
+= 0.8.4 =
+* FIXED: tr.im discontinued service thus it has been removed
+* NEW: Added bit.ly URL shortener
+
 = 0.8.3 =
 * FIXED: passwords are now stored encrypted
 * FIXED: incorrect link in the sent panel
@@ -69,6 +82,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 * initial version
 
 == Other Notes ==
+
+= Video Demo =
+
+[vimeo http://vimeo.com/5734274]
 
 = Licence =
 
