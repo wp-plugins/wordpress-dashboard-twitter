@@ -1,7 +1,7 @@
 === WordPress Dashboard Twitter ===
 Contributors: Alphawolf, ratterobert
 Donate link:
-Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd
+Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener
 Requires at least: 2.7
 Tested up to: 2.9.2
 Stable tag: trunk
@@ -55,6 +55,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 0.8.7 =
+* FIXED: Twitter avatars larger than 48x48 forced back to the regular format so they don't break the layout (Thanks smaakmakend for reporting!)
 
 = 0.8.6 =
 * FIXED: JS and CSS files won't be included in index.php pages other than dashboard only anymore

@@ -45,7 +45,7 @@ function wpdt_load_replies( $ajaxCall ) {
 		
 		$replyoutput .= '<li id="wpdtreply-' . $replies->id . '"><div class="comment-item wpdt-reply-item">';
 		if( $options['show_avatars'] )
-			$replyoutput .= '<div class="avatar"><img src="' . urldecode( $replies->user->profile_image_url ) . '" border="0" alt="" /></div>';
+			$replyoutput .= '<div class="avatar"><img src="' . urldecode( $replies->user->profile_image_url ) . '" border="0" width="48" height="48" alt="" /></div>';
 			
 		$replyoutput .= '<h4 class="wpdt-sender comment-meta">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urldecode( $replies->user->screen_name ) . '" class="url">' . wp_specialchars( $replies->user->screen_name ) . '</a></h4>';
 		$replyoutput .= '<blockquote class="wpdt-text"><p>' . $replytext . '</p></blockquote>';
@@ -100,7 +100,7 @@ function wpdt_load_direct_messages( $ajaxCall ) {
 		$directtext = WPDashboardTwitter::hyperlinkit( js_escape( $messages->text ) );
 		$directoutput .= '<li id="wpdtdm-' . $messages->id . '"><div class="comment-item wpdt-dm-item">';
 		if( $options['show_avatars'] )
-			$directoutput .= '<div class="avatar"><img src="' . urldecode( $messages->sender->profile_image_url ) . '" border="0" alt="" /></div>';
+			$directoutput .= '<div class="avatar"><img src="' . urldecode( $messages->sender->profile_image_url ) . '" width="48" height="48" border="0" alt="" /></div>';
 			
 		$directoutput .= '<h4 class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $messages->sender_screen_name ) . '" class="url">' . wp_specialchars( $messages->sender_screen_name ) . '</a></h4>';
 		$directoutput .= '<blockquote class="wpdt-text"><p>' . $directtext . '</p></blockquote>';
@@ -153,7 +153,7 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 		$senttext = WPDashboardTwitter::hyperlinkit( js_escape( $sent->text ) );
 		$sentoutput .= '<li>';
 		if( $options['show_avatars'] )
-			$sentoutput .= '<div class="avatar"><img src="' . urldecode( $xml_usr->profile_image_url ) . '" border="0" alt="" /></div>';
+			$sentoutput .= '<div class="avatar"><img src="' . urldecode( $xml_usr->profile_image_url ) . '" width="48" height="48" border="0" alt="" /></div>';
 			
 		$sentoutput .= '<h4 class="wpdt-sender">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urlencode( $sent->user->screen_name ) . '" class="url">' . wp_specialchars( $sent->user->screen_name ) . '</a> ';
 		if( !empty( $sent->in_reply_to_screen_name ) )
@@ -210,7 +210,7 @@ function wpdt_load_favorites( $ajaxCall ) {
 		$favoritestext = WPDashboardTwitter::hyperlinkit( js_escape( $favorite->text ) );
 		$favoritesoutput .= '<li>';
 		if( $options['show_avatars'] )
-			$favoritesoutput .= '<div class="avatar"><img src="' . urldecode( $favorite->user->profile_image_url ) . '" border="0" alt="" /></div>';
+			$favoritesoutput .= '<div class="avatar"><img src="' . urldecode( $favorite->user->profile_image_url ) . '" width="48" height="48" border="0" alt="" /></div>';
 			
 		$favoritesoutput .= '<h4 class="wpdt-sender">' . sprintf(__( 'By %s' ), '<a href="http://twitter.com/' . urlencode( $favorite->user->screen_name ) . '" class="url">' . wp_specialchars( $favorite->user->screen_name ) . '</a>') . '</h4>';
 		$favoritesoutput .= '<blockquote class="wpdt-text"><p>' . $favoritestext . '</p></blockquote>';

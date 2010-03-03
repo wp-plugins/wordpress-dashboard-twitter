@@ -18,7 +18,7 @@ if ( !defined( 'WP_PLUGIN_DIR' ) )
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "0.8.6");
+define("WPDT_VERSION", "0.8.7");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
