@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
 		var new_length = jQuery(this).val().length;
 		var cur2 = 140 - new_length;
 		jQuery('#wpdt-charcount').text( cur2 );
-		if( cur2 <= 0 ) {
+		if( cur2 < 0 ) {
 			jQuery('#wpdt-btn-send-status-update').hide();
 		} else {
 			jQuery('#wpdt-btn-send-status-update').show();

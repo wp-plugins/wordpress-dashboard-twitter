@@ -56,6 +56,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 0.8.8 =
+* FIXED: Fixed a minor issue that made it so that you only had 139 characters to post (Thanks Marius for letting us know!)
+
 = 0.8.7 =
 * FIXED: Twitter avatars larger than 48x48 forced back to the regular format so they don't break the layout (Thanks smaakmakend for reporting!)
 
