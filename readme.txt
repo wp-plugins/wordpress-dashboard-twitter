@@ -1,9 +1,9 @@
 === WordPress Dashboard Twitter ===
 Contributors: Alphawolf, ratterobert
 Donate link:
-Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener
+Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.0
+Tested up to: 3.0.1
 Stable tag: trunk
 
 The most creative name **WordPress Dashboard Twitter** in fact represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
@@ -20,15 +20,16 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 
 **At a glance:**
 
+* Twitter OAuth authentication
 * Adds a Twitter Client to your WordPress Dashboard only
-* Display Mentions, Direct Messages, Sent messages and Favorites in a tabbed interface
+* Display Mentions, Direct Messages, Sent messages, Retweets, Timeline and Favorites in a tabbed interface
 * Reply to a Twitter status or Direct Message from within the Dashboard Widget
 * No dedicated page in your WordPress admin panel
 * All customization can be done through the Widget’s Configuration
 * No impact on your blog’s frontend or other backend pages
 * Shortening URLs with **wp.gd (new!)** or bit.ly
-* One-Click-Image-Upload for TwitPic
-* Whenever you check your incoming links or WordPress News in the Dashboard, you can check your Twitter Status as well
+* One-Click-Image-Upload for TwitPic (currently disabled since version 1.0)
+* Whenever you check your incoming links or WordPress News in the Dashboard, you can check your Twitter status as well
 
 **Included languages:**
 
@@ -36,6 +37,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * German (de_DE) (Thanks to Robert Pfotenhauer ;-))
 * Italian (it_IT) (Thanks for contributing italian language goes to [Gianni Diurno](http://gidibao.net))
 * Danish (da_DK) (Thanks for contributing danish language goes to [Georg S. Adamsen](http://wordpress.blogos.dk/))
+* French (fr_FR) (Thanks for contributing french language goes to [Didier](http://www.wptrads.fr))
 
 == Frequently Asked Questions ==
 
@@ -55,6 +57,13 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.0 =
+* ADDED: Switched from Basic Auth to Twitter OAuth authentication (doesn't require to save your credentials in your WP install)
+* ADDED: Retweets Tab, Timeline Tab
+* ADDED: French localization
+* FIXED: New Twitter+OAuth lib + Code rewrite
+* FIXED: Dashboard Widget can now be accessible by everyone (via settings)
 
 = 0.8.8 =
 * FIXED: Fixed a minor issue that made it so that you only had 139 characters to post (Thanks Marius for letting us know!)

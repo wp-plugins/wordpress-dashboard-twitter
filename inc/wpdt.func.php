@@ -19,10 +19,13 @@ function wpdt_load_replies( $ajaxCall ) {
 	// security check
 	check_ajax_referer( 'wpdt_woelfi_nonce' );
 	
-	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-	$replies_xml = $twitter->getMentions(array("count" => $options['items']));
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$replies_xml = $twitter->get('statuses/mentions', array('count' => $options['items']));
 	$xml_replies = simplexml_load_string( $replies_xml );
 	
 	$ajaxCall = $_POST['ajaxCall'];
@@ -37,11 +40,7 @@ function wpdt_load_replies( $ajaxCall ) {
 		}
 		$replytext = WPDashboardTwitter::hyperlinkit( js_escape( $replies->text ) );
 		
-		// for testing purposes only
-		#$replies->user->screen_name = str_replace(array('ratterobert', 'pfotenhauer'), 'randomname', $replies->user->screen_name);
-			
 		$replyurl = sprintf('http://twitter.com/home?status=@%s &in_reply_to_status_id=%s&in_reply_to=%s', $replies->user->name, $replies->id, $replies->user->name);
-		//$favoriteurl = $twitter->createFavorite('xml', $replies->id);
 		
 		$replyoutput .= '<li id="wpdtreply-' . $replies->id . '"><div class="comment-item wpdt-reply-item">';
 		if( $options['show_avatars'] )
@@ -53,17 +52,75 @@ function wpdt_load_replies( $ajaxCall ) {
 		$replyoutput .= '<div class="wpdt-meta">';
 		$replyoutput .= WPDashboardTwitter::human_diff_time_l10n( $replies->created_at );
 		if( !empty( $replies->in_reply_to_screen_name ) ) {
-			$replyoutput .= ' ' . __( 'in reply to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . wp_specialchars( $replies->in_reply_to_screen_name ) . '/status/' . wp_specialchars( $replies->in_reply_to_status_id ) . '" target="_blank">' . wp_specialchars( $replies->in_reply_to_screen_name ) . '</a>';
+			$replyoutput .= ' ' . __( 'in reply to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . wp_specialchars( $replies->in_reply_to_screen_name ) . '/status/' . $replies->in_reply_to_status_id . '" target="_blank">' . wp_specialchars( $replies->in_reply_to_screen_name ) . '</a>';
 		}
 		$replyoutput .= '</div>';
 		$replyoutput .= '<div style="clear:both;"></div>';
 		$replyoutput .= '</div></li>';
-		$i_reply++;
 	}
 	if( $ajaxCall )
 		die( "jQuery('#wpdt-replies-wrapper').html('" . $replyoutput . "').hide().fadeIn();" );
 	else
 		return $replyoutput;
+}
+
+/**
+* Retrieve twitter friends timeline
+* 
+* SACK response function
+*
+* @since 		1.0
+* @param 		boolean $ajaxCall
+* @return 		string $replyoutput
+* @author 		info@wpdashboardtwitter.com/
+*/
+function wpdt_load_timeline( $ajaxCall ) {
+	// security check
+	check_ajax_referer( 'wpdt_woelfi_nonce' );
+	
+	$options = WPDashboardTwitter::dashboard_widget_options();
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$timeline_xml = $twitter->get('statuses/friends_timeline', array('count' => $options['items'], 'include_rts' => 0));
+	$xml_timeline = simplexml_load_string( $timeline_xml );
+	
+	$ajaxCall = $_POST['ajaxCall'];
+		
+	$timelineoutput = '';
+	if( count($xml_timeline->status) == 0 ) {
+		$timelineoutput .= '<li>' . __('No statuses!', 'wp-dashboard-twitter') . '</li>';
+	}
+	foreach ($xml_timeline->status as $timeline) {		
+		if ( seems_utf8($timelinetext) == true ) {
+			$timelinetext = utf8_decode($timelinetext);
+		}
+		$timelinetext = WPDashboardTwitter::hyperlinkit( js_escape( $timeline->text ) );
+		
+		$timelineurl = sprintf('http://twitter.com/home?status=@%s &in_reply_to_status_id=%s&in_reply_to=%s', $timeline->user->name, $timeline->id, $timeline->user->name);
+		
+		$timelineoutput .= '<li id="wpdttimeline-' . $timeline->id . '"><div class="comment-item wpdt-reply-item">';
+		if( $options['show_avatars'] )
+			$timelineoutput .= '<div class="avatar"><img src="' . urldecode( $timeline->user->profile_image_url ) . '" border="0" width="48" height="48" alt="" /></div>';
+			
+		$timelineoutput .= '<h4 class="wpdt-sender comment-meta">' . __( 'From', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . urldecode( $timeline->user->screen_name ) . '" class="url">' . wp_specialchars( $timeline->user->screen_name ) . '</a></h4>';
+		$timelineoutput .= '<blockquote class="wpdt-text"><p>' . $timelinetext . '</p></blockquote>';
+		$timelineoutput .= '<p class="row-actions"><a href="' . urldecode( $timelineurl ) . '" replytoname="' . $timeline->user->screen_name . '" onclick="WPDashboardTwitter.reply(0, ' . $timeline->id . '); return false;" class="meta-reply" title="' . attribute_escape( __('Reply to a user', 'wp-dashboard-twitter') ) . '">' . __('Reply', 'wp-dashboard-twitter') . '</a> | <a href="#" onclick="WPDashboardTwitter.reply(2, ' . $timeline->id . '); return false;" title="' . attribute_escape( __('Retweet this message', 'wp-dashboard-twitter') ) . '">' . __('Retweet', 'wp-dashboard-twitter') . '</a></p>';
+		$timelineoutput .= '<div class="wpdt-meta">';
+		$timelineoutput .= WPDashboardTwitter::human_diff_time_l10n( $timeline->created_at );
+		if( !empty( $timeline->in_reply_to_screen_name ) ) {
+			$timelineoutput .= ' ' . __( 'in reply to', 'wp-dashboard-twitter' ) . ' <a href="http://twitter.com/' . wp_specialchars( $timeline->in_reply_to_screen_name ) . '/status/' . $timeline->in_reply_to_status_id . '" target="_blank">' . wp_specialchars( $timeline->in_reply_to_screen_name ) . '</a>';
+		}
+		$timelineoutput .= '</div>';
+		$timelineoutput .= '<div style="clear:both;"></div>';
+		$timelineoutput .= '</div></li>';
+	}
+	if( $ajaxCall )
+		die( "jQuery('#wpdt-timeline-wrapper').html('" . $timelineoutput . "').hide().fadeIn();" );
+	else
+		return $timelineoutput;
 }
 
 
@@ -81,10 +138,13 @@ function wpdt_load_direct_messages( $ajaxCall ) {
 	// security check
 	check_ajax_referer( 'wpdt_woelfi_nonce' );
 	
-	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-	$direct_xml = $twitter->getMessages(array("count" => $options['items']));
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$direct_xml = $twitter->get('direct_messages', array('count' => $options['items']));
 	$xml_direct = simplexml_load_string( $direct_xml );
 	
 	$ajaxCall = $_POST['ajaxCall'];
@@ -132,11 +192,14 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 	// security check
 	check_ajax_referer( 'wpdt_woelfi_nonce' );
 	
-	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-	$sent_xml = $twitter->getUserTimeline(array("count" => $options['items']));
-	$usr = $twitter->showUser(array("screen_name" => $options['twitter_login']));
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$sent_xml = $twitter->get('statuses/user_timeline', array('count' => $options['items']));
+	$usr = $twitter->get('account/verify_credentials');
 	$xml_usr = simplexml_load_string( $usr );
 	$xml_sent = simplexml_load_string( $sent_xml );
 	
@@ -188,10 +251,13 @@ function wpdt_load_favorites( $ajaxCall ) {
 	// security check
 	check_ajax_referer( 'wpdt_woelfi_nonce' );
 	
-	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-	$favorites_xml = $twitter->getFavorites(array("count" => $options['items']), "xml");
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$favorites_xml = $twitter->get('favorites', array('count' => $options['items']));
 	$xml_favorites = simplexml_load_string( $favorites_xml );
 	
 	$ajaxCall = $_POST['ajaxCall'];
@@ -228,6 +294,57 @@ function wpdt_load_favorites( $ajaxCall ) {
 
 
 /**
+* Retrieve user twitter messages that have been retweeted by others
+* 
+* SACK response function
+*
+* @since 		1.0
+* @param 		boolean $ajaxCall
+* @return 		string $favoritesoutput
+* @author 		info@wpdashboardtwitter.com/
+*/
+function wpdt_load_retweets( $ajaxCall ) {
+	// security check
+	check_ajax_referer( 'wpdt_woelfi_nonce' );
+	
+	$options = WPDashboardTwitter::dashboard_widget_options();
+	if( !class_exists('TwitterOAuth') )
+		require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->format = 'xml';
+	$retweets_xml = $twitter->get('statuses/retweets_of_me', array('count' => $options['items']));
+	$xml_retweets = simplexml_load_string( $retweets_xml );
+	
+	$ajaxCall = $_POST['ajaxCall'];
+		
+	$retweetsoutput = '';
+	if( count($xml_retweets->status) == 0 ) {
+		$retweetsoutput .= '<li>' . __('No retweets of your statuses yet!', 'wp-dashboard-twitter') . '</li>';
+	}
+	foreach ($xml_retweets->status as $retweet) {
+		
+		$retweetstext = WPDashboardTwitter::hyperlinkit( js_escape( $retweet->text ) );
+		$retweetsoutput .= '<li>';
+		if( $options['show_avatars'] )
+			$retweetsoutput .= '<div class="avatar"><img src="' . urldecode( $retweet->user->profile_image_url ) . '" width="48" height="48" border="0" alt="" /></div>';
+			
+		$retweetsoutput .= '<h4 class="wpdt-sender">' . sprintf(__( 'By %s' ), '<a href="http://twitter.com/' . urlencode( $retweet->user->screen_name ) . '" class="url">' . wp_specialchars( $retweet->user->screen_name ) . '</a>') . '</h4>';
+		$retweetsoutput .= '<blockquote class="wpdt-text"><p>' . $retweetstext . '</p></blockquote>';
+		$retweetsoutput .= '<div class="wpdt-meta">';
+		$retweetsoutput .= WPDashboardTwitter::human_diff_time_l10n( $retweet->created_at );
+		$retweetsoutput .= '</div>';
+		$retweetsoutput .= '<div style="clear:both;"></div></li>';
+		$i_fav++;
+	}
+	if( $ajaxCall )
+		die( "jQuery('#wpdt-retweets-wrapper').html('" . $retweetsoutput . "').hide().fadeIn();" );
+	else
+		return $retweetsoutput;
+}
+
+
+/**
 * Send a status update
 * 
 * SACK response function
@@ -245,11 +362,12 @@ function wpdt_send_update( $ajaxCall ) {
 	else
 		$in_reply_to = $_POST['in_reply_to_statusid'];
 	
-	require_once( dirname(__FILE__) . '/twitter.class.php');
 	$options = WPDashboardTwitter::dashboard_widget_options();
-	$twitter = new Twitter($options['twitter_login'], WPDashboardTwitter_Helper::decrypt( $options['twitter_pwd'] ));
-	$twitter->application_source = 'wpdashboardtwitter';
-	$twitter->updateStatus( stripslashes($_POST['status_text']), $in_reply_to );
+	require_once( dirname(__FILE__) . '/twitteroauth.php');
+	require_once( dirname(__FILE__) . '/config.php');
+	$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+	$twitter->useragent = 'WordPress Dashboard Twitter';
+	$twitter->post('statuses/update', array('status' => stripslashes($_POST['status_text']), 'in_reply_to_status_id' => $in_reply_to));
 }
 
 
@@ -347,6 +465,7 @@ function wpdt_shorten_imgurl( $ajaxCall ) {
 * @since 		0.8.2
 * @param 		boolean $ajaxCall
 * @author 		info@wpdashboardtwitter.com/
+* @deprecated	1.0
 */
 function wpdt_verify_credentials( $ajaxCall ) {
 	// security check

@@ -118,6 +118,7 @@ class WPDashboardTwitter_Helper extends WPDashboardTwitter {
  	* @param 		string	$str
  	* @return 		string	$str
  	* @author 		info@wpdashboardtwitter.com
+ 	* @deprecated	1.0
  	*/
 	function decrypt( $str ) {
 		$options = parent::dashboard_widget_options();
