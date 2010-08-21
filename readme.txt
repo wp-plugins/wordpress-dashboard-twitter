@@ -10,9 +10,9 @@ The most creative name **WordPress Dashboard Twitter** in fact represents a Dash
 
 == Description ==
 
-Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboard Twitter is a **Dashboard Widget** that displays Twitter @replies, direct messages, sent messages and favorites the convenient way within your WordPress Dashboard. WordPress Dashboard Twitter turns your Dashboard into a **Twitter client**.
+Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboard Twitter is a **Dashboard Widget** that displays Twitter @replies, direct messages, sent messages, Retweets, Friends Timeline and favorites the convenient way within your WordPress Dashboard. WordPress Dashboard Twitter turns your Dashboard into a **Twitter client**.
 
-The Dashboard widget lets you update your status, send direct messages, follow your mentions, list direct messages, sent messages and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
+The Dashboard widget lets you update your status, send direct messages, follow your mentions and retweets, list direct messages, sent messages, your friends timeline and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
 
 [vimeo http://vimeo.com/5734274]
 
@@ -118,6 +118,7 @@ WordPress Dashboard Twitter comes with its own URL Shortener Service **wp.gd**! 
 
 == Screenshots ==
 
+1. OAuth authentication
 1. The tabbed interface
 1. The status update form
 1. The status update form, changed submit button label when sending a DM
