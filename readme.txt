@@ -58,6 +58,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 1.0.1 =
+* FIXED: Danish localization updated
+* FIXED: Redeclaration error in OAuthException class
+
 = 1.0 =
 * ADDED: Switched from Basic Auth to Twitter OAuth authentication (doesn't require to save your credentials in your WP install)
 * ADDED: Retweets Tab, Timeline Tab
