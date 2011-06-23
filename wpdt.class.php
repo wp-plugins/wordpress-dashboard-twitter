@@ -114,12 +114,7 @@ class WPDashboardTwitter {
  		* This file holds all of the general information and functions
  		*/
 		require_once(WPDT_PLUGINFULLDIR . 'inc/wpdt.func.php');
-		
-		/** 
- 		* This file holds all of the AJAX file upload functions
- 		*/
-		require_once(WPDT_PLUGINFULLDIR . 'inc/upload.func.php');
-		
+		
 		/** 
  		* This file holds all of the compatibility and helper methods
  		*/
