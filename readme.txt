@@ -3,7 +3,7 @@ Contributors: Alphawolf, ratterobert
 Donate link:
 Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.1.2
+Tested up to: 3.2
 Stable tag: trunk
 
 The most creative name **WordPress Dashboard Twitter** in fact represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
@@ -58,6 +58,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.0.6 =
+* FIXED: Security update, please apply immediately!
 
 = 1.0.5 =
 * FIXED: Retweets will now show up in your Home Timeline
