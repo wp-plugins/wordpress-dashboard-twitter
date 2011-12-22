@@ -6,7 +6,7 @@ Requires at least: 2.7
 Tested up to: 3.2
 Stable tag: trunk
 
-The most creative name **WordPress Dashboard Twitter** in fact represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
+WordPress Dashboard Twitter represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
 
 == Description ==
 
