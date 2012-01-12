@@ -156,14 +156,7 @@ var WPDashboardTwitter = {
 		jQuery("#wpdt-tabs" + (needs_jquery_hotfix ? ">ul" : "")).tabs('option', 'disabled', [0,1,2,3,4,5]);
 		jQuery('.wpdt-btn-update-status').hide();
 		jQuery('#wpdt-update-wrapper').show();
-		
 		jQuery.getScript(wpdtAjaxL10n.uploadFileURI + "js/charcounter.js");
-		if( wpdtAjaxL10n.twitPicEnabled == 1 ) {
-			jQuery.getScript(wpdtAjaxL10n.uploadFileURI + "js/ajaxupload.3.5.js", function() {
-				jQuery.getScript(wpdtAjaxL10n.uploadFileURI + "js/scripts_ajaxupload.js");
-			});
-		}
-		
 		if( type == 0 ) {
 			jQuery('#wpdt_in_reply_to_statusid').val( replytoid );
 			var replytoname = jQuery( self ).attr('replytoname');
@@ -172,7 +165,7 @@ var WPDashboardTwitter = {
 			var replytoname = jQuery( self ).attr('replytoname');
 			jQuery('#wpdt-txtarea').val('d ' + replytoname + ' ');
 		} else if( type == 2 ) {
-			var tweetxt = jQuery( self ).parent().prev().find('p').html();
+			var tweetxt = jQuery( self ).parent().next().find('p').html();
 			tweetxt = tweetxt.replace(/(<([^>]+)>)/gi, "");
 			var replytoname = jQuery( self ).prev().attr('replytoname');
 			jQuery('#wpdt-txtarea').val('RT @' + replytoname + ': ' + tweetxt);

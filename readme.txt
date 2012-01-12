@@ -1,9 +1,9 @@
 === WordPress Dashboard Twitter ===
 Contributors: Alphawolf, ratterobert
-Donate link:
+Donate link: http://www.schloebe.de/donate/
 Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.4-alpha-19620
+Tested up to: 3.4
 Stable tag: trunk
 
 WordPress Dashboard Twitter represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
@@ -58,6 +58,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1 =
+* FIXED: Fixed a bug that prevented the tabs to show properly
+* FIXED: UI changes
 
 = 1.0.7 =
 * FIXED: Maintenance Release
