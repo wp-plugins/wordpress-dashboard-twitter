@@ -59,6 +59,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 1.1.0.1 =
+* FIXED: Some images were missing
+
 = 1.1 =
 * FIXED: Fixed a bug that prevented the tabs to show properly
 * FIXED: UI changes
