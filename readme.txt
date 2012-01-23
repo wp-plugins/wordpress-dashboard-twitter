@@ -14,7 +14,7 @@ Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboa
 
 The Dashboard widget lets you update your status, send direct messages, follow your mentions and retweets, list direct messages, sent messages, your friends timeline and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
 
-[Developer on Google+](https://plus.google.com/100776016153395792354 "Developer on Google+") | [Developer on Twitter](http://twitter.com/wpseek "Developer on Twitter")
+[Developer on Google+](https://plus.google.com/118074611982254715031 "Developer on Google+") | [Developer on Twitter](http://twitter.com/wpseek "Developer on Twitter")
 
 [vimeo http://vimeo.com/5734274]
 
