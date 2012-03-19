@@ -41,6 +41,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * Danish (da_DK) (Thanks for contributing danish language goes to [Georg S. Adamsen](http://wordpress.blogos.dk/))
 * French (fr_FR) (Thanks for contributing french language goes to [Didier](http://www.wptrads.fr))
 * Dutch (nl_NL) (Thanks for contributing dutch language goes to [Rene](http://wpwebshop.com/premium-wordpress-plugins/))
+* Turkish (tr_TR) (Thanks for contributing turkish language goes to [Ömer Faruk Karabulut](http://stamboulbazaar.com/))
 
 == Frequently Asked Questions ==
 
@@ -60,6 +61,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.0.2 =
+* NEW: Turkish localization added
 
 = 1.1.0.1 =
 * FIXED: Some images were missing
