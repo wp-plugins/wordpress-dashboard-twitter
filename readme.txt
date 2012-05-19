@@ -16,6 +16,8 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 
 [Developer on Google+](https://plus.google.com/118074611982254715031 "Developer on Google+") | [Developer on Twitter](http://twitter.com/wpseek "Developer on Twitter")
 
+**Looking for more WordPress plugins? Visit [www.schloebe.de/portfolio/](http://www.schloebe.de/portfolio/)**
+
 [vimeo http://vimeo.com/5734274]
 
 **Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run.
@@ -61,6 +63,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.0.3 =
+* FIXED: Maintenance update
 
 = 1.1.0.2 =
 * NEW: Turkish localization added
