@@ -18,7 +18,7 @@ if ( !defined( 'WP_PLUGIN_DIR' ) )
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "1.1.0.3");
+define("WPDT_VERSION", "1.1.1");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
@@ -111,8 +111,8 @@ class WPDashboardTwitter {
  		*/
 		require_once(WPDT_PLUGINFULLDIR . 'inc/wpdt-helper.class.php');
 			
-		add_action('admin_init', array(&$this, 'load_textdomain'), 20);
-		add_action('admin_init', array(&$this, 'admin_init'), 20);
+		add_action('admin_init', array(&$this, 'load_textdomain'));
+		add_action('admin_init', array(&$this, 'admin_init'));
 		add_action('wp_ajax_wpdt_load_replies', 'wpdt_load_replies' );
 		add_action('wp_ajax_wpdt_load_direct_messages', 'wpdt_load_direct_messages' );
 		add_action('wp_ajax_wpdt_load_sent_messages', 'wpdt_load_sent_messages' );
@@ -143,11 +143,11 @@ class WPDashboardTwitter {
 		require_once( dirname(__FILE__) . '/inc/config.php');
 		$options = $this->dashboard_widget_options();
 		
-		if( $_GET['do'] == 'wpdt_clearoauth' ) {
-			$options['oauth_token']  = '';
-			$options['oauth_secret'] = '';
-			$options['oauth_verified'] = 0;
-			$options['oauth_completed'] = 0;
+		if( isset( $_GET['do'] ) && $_GET['do'] == 'wpdt_clearoauth' ) {
+			$options['wpdt_oauth_token']  = '';
+			$options['wpdt_oauth_secret'] = '';
+			$options['wpdt_oauth_verified'] = 0;
+			$options['wpdt_oauth_completed'] = 0;
 			update_option( 'dashboard_twitter_widget_options', $options );
 			wp_redirect( trailingslashit( get_bloginfo('url') ) . 'wp-admin/index.php' );
 		}
@@ -169,10 +169,10 @@ class WPDashboardTwitter {
 		}
 		
 		if( !empty( $_GET['oauth_verifier'] ) && $_SESSION['status'] == 'verified' ) {
-			$options['oauth_token']  = $_SESSION['access_token']['oauth_token'];
-			$options['oauth_secret'] = $_SESSION['access_token']['oauth_token_secret'];
-			$options['oauth_verified'] = 1;
-			$options['oauth_completed'] = 1;
+			$options['wpdt_oauth_token']  = $_SESSION['access_token']['oauth_token'];
+			$options['wpdt_oauth_secret'] = $_SESSION['access_token']['oauth_token_secret'];
+			$options['wpdt_oauth_verified'] = 1;
+			$options['wpdt_oauth_completed'] = 1;
 			update_option( 'dashboard_twitter_widget_options', $options );
 			wp_redirect( trailingslashit( get_bloginfo('url') ) . 'wp-admin/index.php' );
 		}
@@ -233,11 +233,11 @@ class WPDashboardTwitter {
 		if( $twterror != false ) :
 			echo '<p class="account-info">' . __("Twitter is unavailable at the moment. Please try again later!", 'wp-dashboard-twitter') . '</p>';
 		else:
-			if( empty( $options['oauth_verified'] ) || $options['oauth_verified'] != 1 ) {
+			if( empty( $options['wpdt_oauth_verified'] ) || $options['wpdt_oauth_verified'] != 1 ) {
 				echo '<a href="' . WPDashboardTwitter_Helper::plugins_url('inc/connect.php?_callback=' . urlencode( get_bloginfo('wpurl') . '/wp-admin/index.php'), __FILE__) . '"><img src="' . WPDashboardTwitter_Helper::plugins_url('inc/img/twitter_signin_badge.png', __FILE__) . '" border="0" alt="Sign in with Twitter" title="Sign in with Twitter" /></a><br /><br />';
 				echo '<p class="account-info">' . __("This plugin version introduces OAuth Support for Twitter. Twitter announced in December of 2009 the deprecation of Basic Auth on August 16th 2010. Please login with Twitter by clicking the image above, and follow the on-screen instructions.", 'wp-dashboard-twitter') . '</p>';
 			} else {
-				$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['oauth_token'], $options['oauth_secret']);
+				$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $options['wpdt_oauth_token'], $options['wpdt_oauth_secret']);
 				$twitter->format = 'json';
 				$usr = $twitter->get('account/verify_credentials');
 				$ratelimit = $twitter->get('account/rate_limit_status');
@@ -245,7 +245,7 @@ class WPDashboardTwitter {
 				
 				if( $twitter->http_info == '400' )
 					$errors[] = __( '<strong>NOTE:</strong> The Twitter API only allows clients to make a limited number of calls in a given period. You just exceeded the rate limit.', 'wp-dashboard-twitter' );
-				if( $options['oauth_completed'] != 2 )
+				if( $options['wpdt_oauth_completed'] != 2 )
 					$errors[] = sprintf(__( '<strong>NOTE:</strong> Please <a href="%s">save</a> the plugin options for the new options to take effect!', 'wp-dashboard-twitter' ), './index.php?edit=wp_dashboard_twitter#wp_dashboard_twitter');
 				
 				if( count($errors) == 0 )
@@ -267,7 +267,7 @@ endif;
 * @author 		info@wpdashboardtwitter.com
 */
 function dashboard_widget_options() {
-	$defaults = array( 'items' => 5, 'oauth_token' => '', 'oauth_secret' => '', 'show_avatars' => 0, 'startup_tab' => 0, 'url_service' => 'wpgd', 'is_pwd_encrypted' => 0, 'oauth_verified' => 0, 'oauth_completed' => 0, 'access_everyone' => 0 );
+	$defaults = array( 'items' => 5, 'wpdt_oauth_token' => '', 'wpdt_oauth_secret' => '', 'show_avatars' => 0, 'startup_tab' => 0, 'url_service' => 'bitly', 'wpdt_oauth_verified' => 0, 'wpdt_oauth_completed' => 0, 'access_everyone' => 0 );
 	if( ( !$options = get_option( 'dashboard_twitter_widget_options' ) ) || !is_array($options) )
 	$options = array();
 	return array_merge( $defaults, $options );
@@ -281,16 +281,16 @@ function dashboard_widget_options() {
 function init_dashboard_widget_setup() {
 	$options = $this->dashboard_widget_options();
 	if ( 'post' == strtolower($_SERVER['REQUEST_METHOD']) && isset( $_POST['widget_id'] ) && 'wp_dashboard_twitter' == $_POST['widget_id'] ) {
-		foreach ( array( 'items', 'oauth_token', 'oauth_secret', 'show_avatars', 'startup_tab', 'url_service', 'is_pwd_encrypted', 'oauth_completed', 'access_everyone' ) as $key ) {
+		foreach ( array( 'items', 'wpdt_oauth_token', 'wpdt_oauth_secret', 'show_avatars', 'startup_tab', 'url_service', 'is_pwd_encrypted', 'wpdt_oauth_completed', 'access_everyone' ) as $key ) {
 			$options[$key] = $_POST[$key];
 			update_option( 'dashboard_twitter_widget_options', $options );
 		}
 		unset($_SESSION['oauth_token']);
 		unset($_SESSION['oauth_token_secret']);
 	}?>
-<p>	<label for="items"><?php _e('How many items?', 'wp-dashboard-twitter'); ?></label>	<select id="items" name="items">		<option value="3"<?php echo ( $options['items'] == '3' ? " selected='selected'" : '' ) ?>>3</option>		<option value="5"<?php echo ( $options['items'] == '5' ? " selected='selected'" : '' ) ?>>5</option>		<option value="10"<?php echo ( $options['items'] == '10' ? " selected='selected'" : '' ) ?>>10</option>		<option value="15"<?php echo ( $options['items'] == '15' ? " selected='selected'" : '' ) ?>>15</option>	</select></p><p>	<label for="startup_tab"><?php _e('Tab to open by default', 'wp-dashboard-twitter'); ?></label>	<select id="startup_tab" name="startup_tab">		<option value="0"<?php echo ( $options['startup_tab'] == '0' ? " selected='selected'" : '' ) ?>><?php _e('Mentions', 'wp-dashboard-twitter'); ?></option>		<option value="1"<?php echo ( $options['startup_tab'] == '1' ? " selected='selected'" : '' ) ?>><?php _e('Direct', 'wp-dashboard-twitter'); ?></option>		<option value="2"<?php echo ( $options['startup_tab'] == '2' ? " selected='selected'" : '' ) ?>><?php _e('Sent', 'wp-dashboard-twitter'); ?></option>		<option value="3"<?php echo ( $options['startup_tab'] == '3' ? " selected='selected'" : '' ) ?>><?php _e('Favorites', 'wp-dashboard-twitter'); ?></option>		<option value="3"<?php echo ( $options['startup_tab'] == '4' ? " selected='selected'" : '' ) ?>><?php _e('Retweeted', 'wp-dashboard-twitter'); ?></option>		<option value="5"<?php echo ( $options['startup_tab'] == '5' ? " selected='selected'" : '' ) ?>><?php _e('Timeline', 'wp-dashboard-twitter'); ?></option>	</select></p><p>	<label for="url_service"><?php _e('URL Shortener', 'wp-dashboard-twitter'); ?></label>	<select id="url_service" name="url_service">		<option value="wpgd"<?php echo ( $options['url_service'] == 'wpgd' ? " selected='selected'" : '' ) ?>><?php _e('wp.gd', 'wp-dashboard-twitter'); ?></option>		<option value="trim"<?php echo ( $options['url_service'] == 'trim' ? " selected='selected'" : '' ) ?>><?php _e('tr.im', 'wp-dashboard-twitter'); ?></option>		<option value="bitly"<?php echo ( $options['url_service'] == 'bitly' ? " selected='selected'" : '' ) ?>><?php _e('bit.ly', 'wp-dashboard-twitter'); ?></option>	</select></p><p>	<input id="show_avatars" name="show_avatars" type="checkbox" value="1"<?php	if (1 == $options['show_avatars'])		echo ' checked="checked"';	?> />	<label for="show_avatars"><?php _e('Show Avatars?', 'wp-dashboard-twitter'); ?></label></p><?php if( current_user_can( 'level_10' ) ) {?>
+<p>	<label for="items"><?php _e('How many items?', 'wp-dashboard-twitter'); ?></label>	<select id="items" name="items">		<option value="3"<?php echo ( $options['items'] == '3' ? " selected='selected'" : '' ) ?>>3</option>		<option value="5"<?php echo ( $options['items'] == '5' ? " selected='selected'" : '' ) ?>>5</option>		<option value="10"<?php echo ( $options['items'] == '10' ? " selected='selected'" : '' ) ?>>10</option>		<option value="15"<?php echo ( $options['items'] == '15' ? " selected='selected'" : '' ) ?>>15</option>	</select></p><p>	<label for="startup_tab"><?php _e('Tab to open by default', 'wp-dashboard-twitter'); ?></label>	<select id="startup_tab" name="startup_tab">		<option value="0"<?php echo ( $options['startup_tab'] == '0' ? " selected='selected'" : '' ) ?>><?php _e('Mentions', 'wp-dashboard-twitter'); ?></option>		<option value="1"<?php echo ( $options['startup_tab'] == '1' ? " selected='selected'" : '' ) ?>><?php _e('Direct', 'wp-dashboard-twitter'); ?></option>		<option value="2"<?php echo ( $options['startup_tab'] == '2' ? " selected='selected'" : '' ) ?>><?php _e('Sent', 'wp-dashboard-twitter'); ?></option>		<option value="3"<?php echo ( $options['startup_tab'] == '3' ? " selected='selected'" : '' ) ?>><?php _e('Favorites', 'wp-dashboard-twitter'); ?></option>		<option value="3"<?php echo ( $options['startup_tab'] == '4' ? " selected='selected'" : '' ) ?>><?php _e('Retweeted', 'wp-dashboard-twitter'); ?></option>		<option value="5"<?php echo ( $options['startup_tab'] == '5' ? " selected='selected'" : '' ) ?>><?php _e('Timeline', 'wp-dashboard-twitter'); ?></option>	</select></p><p>	<label for="url_service"><?php _e('URL Shortener', 'wp-dashboard-twitter'); ?></label>	<select id="url_service" name="url_service">		<option value="trim"<?php echo ( $options['url_service'] == 'trim' ? " selected='selected'" : '' ) ?>><?php _e('tr.im', 'wp-dashboard-twitter'); ?></option>		<option value="bitly"<?php echo ( $options['url_service'] == 'bitly' ? " selected='selected'" : '' ) ?>><?php _e('bit.ly', 'wp-dashboard-twitter'); ?></option>	</select></p><p>	<input id="show_avatars" name="show_avatars" type="checkbox" value="1"<?php	if (1 == $options['show_avatars'])		echo ' checked="checked"';	?> />	<label for="show_avatars"><?php _e('Show Avatars?', 'wp-dashboard-twitter'); ?></label></p><?php if( current_user_can( 'level_10' ) ) {?>
 <p>	<input id="access_everyone" name="access_everyone" type="checkbox" value="1"<?php	if (1 == $options['access_everyone'])		echo ' checked="checked"';	?> />	<label for="access_everyone"><?php _e('Make the Dashboard Widget accessible for everyone?', 'wp-dashboard-twitter'); ?></label></p><?php }?>
-<p>	<input name="oauth_token" type="hidden" value="<?php echo $options['oauth_token']; ?>" />	<input name="oauth_secret" type="hidden" value="<?php echo $options['oauth_secret']; ?>" />	<input name="oauth_verified" type="hidden" value="<?php echo $options['oauth_verified']; ?>" />	<input name="oauth_completed" type="hidden" value="2" /></p><p>	<input id="is_pwd_encrypted" name="is_pwd_encrypted" type="hidden" value="1" /></p><?php
+<p>	<input name="wpdt_oauth_token" type="hidden" value="<?php echo $options['wpdt_oauth_token']; ?>" />	<input name="wpdt_oauth_secret" type="hidden" value="<?php echo $options['wpdt_oauth_secret']; ?>" />	<input name="wpdt_oauth_verified" type="hidden" value="<?php echo $options['wpdt_oauth_verified']; ?>" />	<input name="wpdt_oauth_completed" type="hidden" value="2" /></p><?php
 }
 /**
 * Turns plain text links into hyperlinks

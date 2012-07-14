@@ -35,8 +35,8 @@ function wpdt_load_replies( $ajaxCall ) {
 		$replyoutput .= '<li>' . __('No mentions!', 'wp-dashboard-twitter') . '</li>';
 	}
 	foreach ($xml_replies->status as $replies) {
-		if ( seems_utf8($replytext) == true ) {
-			$replytext = utf8_decode($replytext);
+		if ( seems_utf8($replies->text) == true ) {
+			$replies->text = utf8_decode($replies->text);
 		}
 		$replytext = WPDashboardTwitter::hyperlinkit( js_escape( $replies->text ) );
 		
@@ -93,8 +93,8 @@ function wpdt_load_timeline( $ajaxCall ) {
 		$timelineoutput .= '<li>' . __('No statuses!', 'wp-dashboard-twitter') . '</li>';
 	}
 	foreach ($xml_timeline->status as $timeline) {		
-		if ( seems_utf8($timelinetext) == true ) {
-			$timelinetext = utf8_decode($timelinetext);
+		if ( seems_utf8($timeline->text) == true ) {
+			$timeline->text = utf8_decode($timeline->text);
 		}
 		$timelinetext = WPDashboardTwitter::hyperlinkit( js_escape( $timeline->text ) );
 		
@@ -206,7 +206,7 @@ function wpdt_load_sent_messages( $ajaxCall ) {
 	$sentoutput = '';
 	if( count($xml_sent->status) == 0 ) {
 		$sentoutput .= '<li>' . __('No sent messages!', 'wp-dashboard-twitter') . '</li>';
-	}
+	}	$i_sent = 0;
 	foreach ($xml_sent->status as $sent) {
 		// for testing purposes only
 		#$sent->user->screen_name = str_replace(array('ratterobert', 'pfotenhauer'), 'randomname', $sent->user->screen_name);
@@ -319,7 +319,7 @@ function wpdt_load_retweets( $ajaxCall ) {
 	$retweetsoutput = '';
 	if( count($xml_retweets->status) == 0 ) {
 		$retweetsoutput .= '<li>' . __('No retweets of your statuses yet!', 'wp-dashboard-twitter') . '</li>';
-	}
+	}	$i_retweets = 0;
 	foreach ($xml_retweets->status as $retweet) {
 		
 		$retweetstext = WPDashboardTwitter::hyperlinkit( js_escape( $retweet->text ) );
@@ -333,7 +333,7 @@ function wpdt_load_retweets( $ajaxCall ) {
 		$retweetsoutput .= WPDashboardTwitter::human_diff_time_l10n( $retweet->created_at );
 		$retweetsoutput .= '</div>';
 		$retweetsoutput .= '<div style="clear:both;"></div></li>';
-		$i_fav++;
+		$i_retweets++;
 	}
 	if( $ajaxCall )
 		die( "jQuery('#wpdt-retweets-wrapper').html('" . $retweetsoutput . "').hide().fadeIn();" );
