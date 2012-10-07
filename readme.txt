@@ -64,6 +64,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 1.1.3 =
+* FIXED: Fixed a bug that caused some status messages to be blank (due to wrong character encoding)
+
 = 1.1.2 =
 * FIXED: Fixed a bug that caused some tabs to be blank
 

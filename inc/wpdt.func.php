@@ -36,9 +36,6 @@ function wpdt_load_replies( $ajaxCall ) {
 		$replyoutput .= '<li>' . __('No mentions!', 'wp-dashboard-twitter') . '</li>';
 	} else {
 		foreach ($xml_replies->status as $replies) {
-			if ( seems_utf8($replies->text) == true ) {
-				$replies->text = utf8_decode($replies->text);
-			}
 			$replytext = WPDashboardTwitter::hyperlinkit( js_escape( $replies->text ) );
 			
 			$replyurl = sprintf('http://twitter.com/home?status=@%s &in_reply_to_status_id=%s&in_reply_to=%s', $replies->user->name, $replies->id, $replies->user->name);
@@ -93,9 +90,6 @@ function wpdt_load_timeline( $ajaxCall ) {
 		$timelineoutput .= '<li>' . __('No statuses!', 'wp-dashboard-twitter') . '</li>';
 	} else {
 		foreach ($xml_timeline->status as $timeline) {
-			if ( seems_utf8($timeline->text) == true ) {
-				$timeline->text = utf8_decode($timeline->text);
-			}
 			$timelinetext = WPDashboardTwitter::hyperlinkit( js_escape( $timeline->text ) );
 			$timelineurl = sprintf('http://twitter.com/home?status=@%s &in_reply_to_status_id=%s&in_reply_to=%s', $timeline->user->name, $timeline->id, $timeline->user->name);	
 			$timelineoutput .= '<li id="wpdttimeline-' . $timeline->id . '"><div class="comment-item wpdt-reply-item">';
