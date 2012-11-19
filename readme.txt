@@ -5,6 +5,8 @@ Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oaut
 Requires at least: 2.7
 Tested up to: 3.5
 Stable tag: trunk
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 WordPress Dashboard Twitter represents a Dashboard Widget for WordPress, that turns your Dashboard into a Twitter Client.
 
@@ -63,6 +65,11 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.4 =
+* FIXED: Removed unused files
+* FIXED: Readme.txt updated to be more compliant with the readme.txt standard
+* FIXED: Moved screenshots off the package to the assets/ folder
 
 = 1.1.3 =
 * FIXED: Fixed a bug that caused some status messages to be blank (due to wrong character encoding)
