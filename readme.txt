@@ -66,6 +66,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 1.1.5 =
+* FIXED: Oauth bug that prevented new users to authenticate with Twitter
+* FIXED: WordPress 3.5 UI enhancements
+
 = 1.1.4 =
 * FIXED: Removed unused files
 * FIXED: Readme.txt updated to be more compliant with the readme.txt standard

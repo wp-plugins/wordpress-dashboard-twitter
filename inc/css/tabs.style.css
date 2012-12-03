@@ -39,10 +39,10 @@ div#wp_dashboard_twitter .ui-tabs-nav li a:hover {
 	background: #dadada;
 	color: #212121;
 }
-div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected {
+div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-active {
 	border-bottom-color: #ffffff;
 }
-div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a:hover {
+div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-selected a:hover, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-active a, div#wp_dashboard_twitter .ui-tabs-nav li.ui-tabs-active a:hover {
 	background: #ffffff;
 	color: #212121;
 }

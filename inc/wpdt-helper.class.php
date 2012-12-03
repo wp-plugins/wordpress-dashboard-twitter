@@ -81,8 +81,7 @@ class WPDashboardTwitter_Helper extends WPDashboardTwitter {
 			'bitly' => array( 'name' => 'bit.ly', 'apiurl' => 'http://api.bit.ly/shorten?version=2.0.1&format=xml&login=wpdashboardtwitter&apiKey=R_1170b54df8fff071764dad0188ed02da&longUrl=' )
 		);
 		return $services;
-	}
-	
+	}		/** 	* Wrapper for the js_escape function 	* 	* @since 		1.1.5 	* @return 		string 	$services 	* @author 		info@wpdashboardtwitter.com 	*/	function esc_js( $str ) {		if( version_compare($GLOBALS['wp_version'], '2.7.999', '>') ) {			return esc_js( $str );		} else {			return js_escape( $str );		}	}		/** 	* Wrapper for the js_escape function 	* 	* @since 		1.1.5 	* @return 		string 	$services 	* @author 		info@wpdashboardtwitter.com 	*/	function esc_attr( $str ) {		if( version_compare($GLOBALS['wp_version'], '2.7.999', '>') ) {			return esc_attr( $str );		} else {			return attribute_escape( $str );		}	}		/** 	* Wrapper for the esc_html function 	* 	* @since 		1.1.5 	* @return 		string 	$services 	* @author 		info@wpdashboardtwitter.com 	*/	function esc_html( $str ) {		if( version_compare($GLOBALS['wp_version'], '2.7.999', '>') ) {			return esc_html( $str );		} else {			return wp_specialchars( $str );		}	}
 	
 	/**
  	* Displays the name of the used url shortener
