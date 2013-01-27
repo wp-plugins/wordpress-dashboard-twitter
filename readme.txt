@@ -3,7 +3,7 @@ Contributors: Alphawolf, ratterobert
 Donate link: http://www.schloebe.de/donate/
 Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.5
+Tested up to: 3.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * French (fr_FR) (Thanks for contributing french language goes to [Didier](http://www.wptrads.fr))
 * Dutch (nl_NL) (Thanks for contributing dutch language goes to [Rene](http://wpwebshop.com/premium-wordpress-plugins/))
 * Turkish (tr_TR) (Thanks for contributing turkish language goes to [Ömer Faruk Karabulut](http://stamboulbazaar.com/))
+* Swedish (sk_SK) (Thanks for contributing swedish language goes to [Branco Radenovich](http://webhostinggeeks.com/user-reviews/))
 
 == Frequently Asked Questions ==
 
@@ -65,6 +66,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.6 =
+* NEW: Swedish localization added
 
 = 1.1.5 =
 * FIXED: Oauth bug that prevented new users to authenticate with Twitter
