@@ -3,7 +3,7 @@
 session_start();
 
 /* Include */
-require_once('twitteroauth.php');
+require_once('twitteroauth_compat.php');
 require_once('config.php');
 
 /* Init */
@@ -26,7 +26,7 @@ switch ($connect->http_code) {
     break;
   case 200:
     $url = $connect->getAuthorizeURL($token['oauth_token']);
-    header('Location: ' . $url);
+    header('Location: ' . $url); 
     break;
   default:
     echo 'Could not connect to Twitter.';

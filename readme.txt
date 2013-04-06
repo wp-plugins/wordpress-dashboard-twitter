@@ -22,7 +22,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 
 [vimeo http://vimeo.com/5734274]
 
-**Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run.
+**Note:** The plugin requires at least WordPress 2.7 and PHP 5 in order to run. The openSSL module is mandatory, too.
 
 **At a glance:**
 
@@ -66,6 +66,12 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.8 =
+* FIXED: Changed some button labels to be more clear
+
+= 1.1.7 =
+* NEW: Compatibility Mode added for users who can't sign in with Twitter
 
 = 1.1.6 =
 * NEW: Swedish localization added
