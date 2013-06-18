@@ -3,7 +3,7 @@ Contributors: Alphawolf, ratterobert
 Donate link: http://www.schloebe.de/donate/
 Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.6
+Tested up to: 3.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ WordPress Dashboard Twitter represents a Dashboard Widget for WordPress, that tu
 
 == Description ==
 
-Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboard Twitter is a **Dashboard Widget** that displays Twitter @replies, direct messages, sent messages, Retweets, Friends Timeline and favorites the convenient way within your WordPress Dashboard. WordPress Dashboard Twitter turns your Dashboard into a **Twitter client**.
+Twitter is everywhere. So why not in your WordPress Dashboard? WordPress Dashboard Twitter is a **Dashboard Widget** that displays Twitter @replies, sent direct messages, Retweets, Friends Timeline and favorites the convenient way within your WordPress Dashboard. WordPress Dashboard Twitter turns your Dashboard into a **Twitter client**.
 
 The Dashboard widget lets you update your status, send direct messages, follow your mentions and retweets, list direct messages, sent messages, your friends timeline and your favorites in a simple tab interface. All in a single widget. No seperate admin page needed. All the Twitter stuff you need right *where* you need it.
 
@@ -66,6 +66,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.9 =
+* FIXED: Migrated to Twitter API 1.1 as 1.0 retired
 
 = 1.1.8 =
 * FIXED: Changed some button labels to be more clear

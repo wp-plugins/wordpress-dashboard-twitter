@@ -14,24 +14,24 @@ var WPDashboardTwitter = {
 			WPDashboardTwitter.tabLoader( 0 );
 			return false;
 		});
-		jQuery('#wpdt-btn-load-direct-messages').click(function() {
+		/*jQuery('#wpdt-btn-load-direct-messages').click(function() {
 			WPDashboardTwitter.tabLoader( 1 );
 			return false;
 		});
 		jQuery('#wpdt-btn-load-sent-messages').click(function() {
 			WPDashboardTwitter.tabLoader( 2 );
 			return false;
-		});
+		});*/
 		jQuery('#wpdt-btn-load-favorites').click(function() {
-			WPDashboardTwitter.tabLoader( 3 );
+			WPDashboardTwitter.tabLoader( 1 );
 			return false;
 		});
 		jQuery('#wpdt-btn-load-retweets').click(function() {
-			WPDashboardTwitter.tabLoader( 4 );
+			WPDashboardTwitter.tabLoader( 2 );
 			return false;
 		});
 		jQuery('#wpdt-btn-load-timeline').click(function() {
-			WPDashboardTwitter.tabLoader( 5 );
+			WPDashboardTwitter.tabLoader( 3 );
 			return false;
 		});
 		
@@ -101,19 +101,19 @@ var WPDashboardTwitter = {
 			case 0:
 				WPDashboardTwitter.load_replies();
 				break;
-			case 1:
+			/*case 1:
 				WPDashboardTwitter.load_direct_messages();
 				break;
 			case 2:
 				WPDashboardTwitter.load_sent_messages();
-				break;
-			case 3:
+				break;*/
+			case 1:
 				WPDashboardTwitter.load_favorites();
 				break;
-			case 4:
+			case 2:
 				WPDashboardTwitter.load_retweets();
 				break;
-			case 5:
+			case 3:
 				WPDashboardTwitter.load_timeline();
 				break;
 		}
