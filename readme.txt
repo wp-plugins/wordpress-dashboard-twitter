@@ -67,6 +67,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 
 == Changelog ==
 
+= 1.1.10 =
+* FIXED: jQuery UI deprecation changes
+
 = 1.1.9 =
 * FIXED: Migrated to Twitter API 1.1 as 1.0 retired
 
