@@ -9,7 +9,7 @@
 /**
  * Define the plugin version
  */
-define("WPDT_VERSION", "1.1.10");
+define("WPDT_VERSION", "1.1.11");
 
 /**
  * Define the global var WPDTISWP27, returning bool if at least WP 2.7 is running
@@ -52,22 +52,6 @@ class WPDashboardTwitter {
 	 * @access private
 	 */
 	private $nonce;
-
-	/**
- 	* The WPDashboardTwitter class constructor
- 	* initializing required stuff for the plugin
- 	* 
- 	* We don't really need this since the plugin requires
- 	* PHP5 to run, but well... ;-)
- 	* 
-	* PHP 4 Compatible Constructor
- 	*
- 	* @since 		0.8
- 	* @author 		scripts@schloebe.de
- 	*/
-	function wpdashboardtwitter() {
-		$this->__construct();
-	}
 	
 	
 	/**
@@ -102,7 +86,7 @@ class WPDashboardTwitter {
  		*/
 		require_once(WPDT_PLUGINFULLDIR . 'inc/wpdt-helper.class.php');
 			
-		add_action('admin_init', array(&$this, 'load_textdomain'));
+		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
 		add_action('admin_init', array(&$this, 'admin_init'));
 		add_action('wp_ajax_wpdt_load_replies', 'wpdt_load_replies' );
 		add_action('wp_ajax_wpdt_load_direct_messages', 'wpdt_load_direct_messages' );
@@ -114,6 +98,23 @@ class WPDashboardTwitter {
 		add_action('wp_ajax_wpdt_shorten_url', 'wpdt_shorten_url' );
 		add_action('wp_ajax_wpdt_shorten_imgurl', 'wpdt_shorten_imgurl' );
 		add_action('wp_ajax_wpdt_verify_credentials', 'wpdt_verify_credentials' );
+	}
+	
+
+	/**
+ 	* The WPDashboardTwitter class constructor
+ 	* initializing required stuff for the plugin
+ 	* 
+ 	* We don't really need this since the plugin requires
+ 	* PHP5 to run, but well... ;-)
+ 	* 
+	* PHP 4 Compatible Constructor
+ 	*
+ 	* @since 		0.8
+ 	* @author 		scripts@schloebe.de
+ 	*/
+	function wpdashboardtwitter() {
+		$this->__construct();
 	}
 	
 	

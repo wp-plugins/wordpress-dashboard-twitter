@@ -3,7 +3,7 @@ Contributors: Alphawolf, ratterobert
 Donate link: http://www.schloebe.de/donate/
 Tags: twitter, tweet, wordpress, dashboard, widget, bitly, wpgd, shortener, oauth, retweet, timeline
 Requires at least: 2.7
-Tested up to: 3.7
+Tested up to: 3.9
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,10 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.11 =
+* FIXED: 'Redefining already defined constructor' bug that occured on several configurations
+* FIXED: WP 3.8 compatibility
 
 = 1.1.10 =
 * FIXED: jQuery UI deprecation changes
