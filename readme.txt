@@ -35,8 +35,7 @@ The Dashboard widget lets you update your status, send direct messages, follow y
 * No dedicated page in your WordPress admin panel
 * All customization can be done through the Widget’s Configuration
 * No impact on your blog’s frontend or other backend pages
-* Shortening URLs with **wp.gd (new!)** or bit.ly
-* One-Click-Image-Upload for TwitPic (currently disabled since version 1.0)
+* Shortening URLs bit.ly
 * Whenever you check your incoming links or WordPress News in the Dashboard, you can check your Twitter status as well
 
 **Included languages:**
@@ -68,6 +67,9 @@ Please visit [the official website](http://wpdashboardtwitter.com/ "WordPress Da
 4. Installation finished.
 
 == Changelog ==
+
+= 1.1.13 =
+* FIXED: Issue caused by code minification
 
 = 1.1.11 =
 * FIXED: 'Redefining already defined constructor' bug that occured on several configurations
